@@ -102,6 +102,13 @@ void gba_audio_set_volume(unsigned percent)
         h1_diag("AUDIO_VOLUME percent=%u native=1",volume);
     }
 }
+unsigned gba_audio_get_volume(void)
+{
+    if (volume_owned) return volume;
+    resolve_volume();
+    int value=get_volume?get_volume():-1;
+    return value>=0&&value<=100?(unsigned)value:volume_requested?volume:100u;
+}
 
 /* V1.41 has no public completion callback. Resolve the queue's address from
  * the supplied submit implementation, accepting only its verified instruction
@@ -198,6 +205,7 @@ int gba_audio_open(unsigned source_rate)
         if (previous>=0 && previous<=100) {
             original_volume=(unsigned)previous;volume_owned=1;
             if(volume_requested)set_volume((int)volume);
+            else volume=(unsigned)previous;
         }
     }
     if (!volume_owned) h1_diag("AUDIO_VOLUME unavailable=1");

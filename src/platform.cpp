@@ -2,6 +2,8 @@
 #include "h1_sdk.h"
 #include "h1_port.h"
 #include "hud.h"
+#include "menu.h"
+#include "settings.h"
 #if H1_CPU_MHZ > 336
 #include "runtime_clock.h"
 #endif
@@ -36,7 +38,8 @@ extern "C" const uint32_t h1_ps1_abi[] __attribute__((used,section(".h1meta")))=
 struct pl_data_t pl_data;
 unsigned short *SCREEN;
 bool show_fps;
-static unsigned gui_open,held[45],skip=H1_GPU_SKIP?0:1,paused;
+static unsigned gui_open,skip=H1_GPU_SKIP?0:1,paused,pause_requested,opening_touch,opening_key;
+static uint8_t held[45],alias_owner[256],blocked_codes[256];
 static char log_buffer[12288];
 static unsigned log_used;
 static uint32_t colors[32768];
@@ -119,47 +122,81 @@ extern "C" void h1_ps1_present(void){
         prev=sy;
     }
     ++h1_ps1_stats.displayed;
-    h1_hud_draw(out,h1_raw_tick_80hz(),h1_ps1_stats.tick_hz,h1_ps1_stats.frames,h1_ps1_stats.displayed,hud_clear);
+    if(h1_settings.hud)h1_hud_draw(out,h1_raw_tick_80hz(),h1_ps1_stats.tick_hz,h1_ps1_stats.frames,h1_ps1_stats.displayed,hud_clear);
     h1_ps1_stats.video_ticks+=h1_raw_tick_80hz()-start;
 }
-static int keybit(unsigned key){
-    switch(key){
-    case H1_KEY_SPACE:return 0;case H1_KEY_ENTER:case H1_KEY_CONFIRM:return 3;
-    case H1_KEY_UP:return 4;case H1_KEY_RIGHT:return 5;case H1_KEY_DOWN:return 6;case H1_KEY_LEFT:return 7;
-    case H1_KEY_Q:return 8;case H1_KEY_W:return 9;case H1_KEY_A:return 10;case H1_KEY_S:return 11;
-    case H1_KEY_V:return 12;case H1_KEY_C:return 13;case H1_KEY_Z:return 14;case H1_KEY_X:return 15;
-    default:return -1;}
+extern "C" void h1_ps1_apply_settings(void){
+    h1_settings_ensure();
+    Config.FrameSkip=h1_settings.gpu_skip;skip=h1_settings.lcd_skip;
+    spu_config.iUseReverb=h1_settings.quality;spu_config.iUseInterpolation=h1_settings.quality?2:0;
+#if H1_AUDIO_TURBO
+    h1_spu_turbo_set(h1_settings.turbo);
+#endif
+    if(h1_settings.volume_set||h1_settings.mute)gba_audio_set_volume(h1_settings.mute?0:h1_settings.volume);
+    clear_screen=1;h1_hud_reset();
 }
 void pad_update(void){
     for(unsigned i=0;i<64;++i){int e=-1,k=-1;h1_event_fetch(&e,&k);if(e==-1&&k==-1)break;
+        if(e==11){pause_requested=opening_touch=1;opening_key=0;break;}
         if((e==H1_EVENT_KEY_DOWN||e==H1_EVENT_KEY_UP)&&k>=1&&k<=44){
             unsigned edge=e==H1_EVENT_KEY_DOWN&&!held[k];held[k]=e==H1_EVENT_KEY_DOWN;
-            if(edge&&(k==H1_KEY_ESCAPE||k==H1_KEY_BACK))h1_ps1_stats.stop=1;
-            if(edge&&k==H1_KEY_F){skip=(skip+1)%3;clear_screen=1;}
-            if(edge&&k==H1_KEY_H){
-                bool quality=!spu_config.iUseReverb;
-                spu_config.iUseReverb=quality;spu_config.iUseInterpolation=quality?2:0;
-                h1_ps1_log("AUDIO_QUALITY gaussian_reverb=%u",quality);
+            if(e==H1_EVENT_KEY_DOWN&&k<=42){
+                unsigned code=h1_game_key_code(k);
+                if(code==1||code==28||code==105||code==106)alias_owner[code]=(uint8_t)k;
             }
+            if(edge&&(k==H1_KEY_P||k==H1_KEY_ESCAPE||k==H1_KEY_BACK)){
+                pause_requested=1;opening_key=k;opening_touch=0;break;
+            }
+            if(edge&&k==H1_KEY_F){h1_settings.lcd_skip=(h1_settings.lcd_skip+1)%3;h1_settings_changed();h1_ps1_apply_settings();}
+            if(edge&&k==H1_KEY_H){h1_settings.quality=!h1_settings.quality;h1_settings_changed();h1_ps1_apply_settings();}
 #if H1_AUDIO_TURBO
-            if(edge&&k==H1_KEY_T){
-                h1_spu_turbo_set(!h1_spu_turbo_mode);
-                h1_ps1_log("AUDIO_TURBO enabled=%u mono=1 voice_mix_hz=22050 quiet_peak=256",h1_spu_turbo_mode);
-            }
+            if(edge&&k==H1_KEY_T){h1_settings.turbo=!h1_settings.turbo;h1_settings_changed();h1_ps1_apply_settings();}
 #endif
 #ifdef USE_GPULIB
-            if(edge&&k==H1_KEY_G){Config.FrameSkip=Config.FrameSkip?0:1;skip=Config.FrameSkip?0:1;gpulib_frameskip_prepare();clear_screen=1;}
+            if(edge&&k==H1_KEY_G){
+                h1_settings.gpu_skip=h1_settings.gpu_skip?0:1;h1_settings.lcd_skip=h1_settings.gpu_skip?0:1;
+                h1_settings_changed();h1_ps1_apply_settings();gpulib_frameskip_prepare();
+            }
 #endif
-            if(edge&&k==H1_KEY_P){paused=!paused;h1_ps1_audio_pause(paused);clear_screen=1;h1_hud_reset();}
         }
     }
 }
 unsigned short pad_read(int player){
-    if(player)return 0xffff;
-    unsigned bits=0;
-    // Native simultaneous-key query remains authoritative for release.
-    for(unsigned k=1;k<=42;++k){int b=keybit(k);if(b>=0&&h1_game_code_down(h1_game_key_code(k)))bits|=1u<<b;}
+    if(player||paused)return 0xffff;h1_settings_ensure();
+    unsigned bits=0,sampled[4]={0},down_codes[4]={0};
+    for(unsigned k=1;k<=42;++k){
+        unsigned assignment=h1_settings.mapping[k];if(!assignment)continue;
+        unsigned code=h1_game_key_code(k);
+        unsigned word=code>>5,mask=1u<<(code&31);
+        if(!(sampled[word]&mask)){
+            sampled[word]|=mask;if(h1_game_code_down(code))down_codes[word]|=mask;
+            else blocked_codes[code]=alias_owner[code]=0;
+        }
+        if(!(down_codes[word]&mask)||blocked_codes[code])continue;
+        if(code==28||code==105||code==106){
+            unsigned owner=alias_owner[code]?alias_owner[code]:code==28?H1_KEY_ENTER:code==105?H1_KEY_LEFT:H1_KEY_RIGHT;
+            if(owner!=k)continue;
+        }
+        bits|=1u<<(assignment-1);
+    }
     return (unsigned short)~bits;
+}
+static void pause_at_frame(void){
+    unsigned start=h1_raw_tick_80hz();paused=1;h1_ps1_audio_pause(1);
+    int action=h1_ps1_pause_menu(held,opening_touch,opening_key);
+    pause_requested=opening_touch=opening_key=0;
+    memset(alias_owner,0,sizeof alias_owner);memset(blocked_codes,0,sizeof blocked_codes);
+    for(unsigned k=1;k<=42;++k)if(h1_settings.mapping[k]){
+        unsigned code=h1_game_key_code(k);if(h1_game_code_down(code))blocked_codes[code]=1;
+    }
+    h1_ps1_apply_settings();
+#ifdef USE_GPULIB
+    gpulib_frameskip_prepare();
+#endif
+    unsigned delta=h1_raw_tick_80hz()-start;pace_origin+=delta;h1_ps1_stats.paused_ticks+=delta;
+    h1_ps1_stats.raw_end=h1_raw_tick_80hz();paused=0;
+    if(action)h1_ps1_stats.stop=1;
+    if(!h1_ps1_stats.stop)h1_ps1_audio_pause(0);
 }
 unsigned get_ticks(void){unsigned hz=h1_ps1_stats.tick_hz;if(!hz)hz=100;return (unsigned)((uint64_t)h1_raw_tick_80hz()*1000000u/hz);}
 void wait_ticks(unsigned t){unsigned a=get_ticks();while(get_ticks()-a<t)h1_ps1_check_stop();}
@@ -176,13 +213,7 @@ void pl_frame_limit(void){
     h1_clock_run_frame(n);
 #endif
     pad_update();
-    if(paused){
-        unsigned pause_start=h1_raw_tick_80hz();
-        while(paused&&!h1_ps1_stats.stop)pad_update();
-        unsigned delta=h1_raw_tick_80hz()-pause_start;
-        pace_origin+=delta;h1_ps1_stats.paused_ticks+=delta;
-        h1_ps1_stats.raw_end=h1_raw_tick_80hz();
-    }
+    if(pause_requested)pause_at_frame();
     if(H1_TEST_FRAMES && n>=H1_TEST_FRAMES){
 #if H1_CLOCK_TEST
         h1_ps1_stats.stop=1;

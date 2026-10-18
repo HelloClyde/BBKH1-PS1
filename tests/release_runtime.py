@@ -14,7 +14,7 @@ def main():
             elif self.paused and not self.audio_active and not self.resumed:
                 self.events.extend(((9,31),(10,31)));self.resumed=True
             return super().event(code,key,*a)
-    m=Runtime(args.bda,guest,path='A:\\PS1\\娴嬭瘯.exe');m.run()
+    m=Runtime(args.bda,guest,path='A:\\PS1\\测试.exe');m.run()
     assert m.paused and m.resumed and len(m.audio_submissions)>=2
     st=struct.unpack('<52I',m.read(m.symbols['h1_clock_stats'],208))
     assert st[2:4]==(2,0) and 408 in m.clock_model['rates']

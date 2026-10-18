@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parents[1]
 WORK=ROOT
 
 def run(args):
-    p=subprocess.run(list(map(str,args)),capture_output=True,text=True)
+    p=subprocess.run(list(map(str,args)),capture_output=True,text=True,encoding='utf-8',errors='replace')
     if p.returncode: raise RuntimeError(p.stdout+p.stderr)
     return p.stdout
 
@@ -134,12 +134,13 @@ def main():
     if args.audio_turbo:flags+=['-DH1_AUDIO_TURBO=1']
     if args.clock_test:flags+=[f'-DH1_CLOCK_TEST={args.clock_test}']
     flags+=[f'-DH1_CPU_MHZ={args.cpu_mhz}']
+    flags+=[f'-DH1_PS1_VERSION="{(ROOT/"VERSION").read_text(encoding="ascii").strip()}"']
     if not args.interpreter: flags+=['-DPSXREC']
     includes=[ROOT/'src/include',ROOT/'src',sdk/'sdk/include',core,core/'plugin_lib',
               core/'gpu/gpu_unai',core/'spu/spu_pcsxrearmed',zlib]
     flags += [x for p in includes for x in ('-I',str(p))]
     sources=[ROOT/'src'/p for p in ['entry.S','startup.c','libc.c','libc_extra.c','jump.S',
-             'platform.cpp','disc.cpp','audio_out.c','audio.c','main.cpp','hud.c']]
+             'platform.cpp','disc.cpp','audio_out.c','audio.c','main.cpp','hud.c','settings.c','menu.cpp']]
     if args.audio_diag:
         from prepare_audio_diag import prepare_audio_diag
         audio,disc=prepare_audio_diag(ROOT,build)
@@ -217,6 +218,7 @@ def main():
     # cache candidate, so numerical/PCM tests do not depend on LTO inlining.
     component_symbols=['h1_spu_adpcm_uncached','h1_ps1_configure','SPUinit','SPUopen','SPUshutdown',
         'SPUwriteRegister','SPUwriteDMAMem','SPUasync'] if args.adpcm_cache or args.fast_adpcm else []
+    component_symbols+=['h1_settings_load','h1_settings_save','h1_settings_changed','h1_settings_writable','h1_mapping_assign']
     if args.adpcm_cache:component_symbols+=['h1_spu_adpcm_cached','h1_spu_adpcm_cache_reset']
     if args.fast_adpcm:component_symbols+=['h1_spu_adpcm_fast']
     if args.fast_spu:component_symbols+=['h1_spu_samples_noint','h1_ps1_configure','SPUinit','SPUopen','SPUshutdown','SPUwriteRegister','SPUwriteDMAMem','SPUasync']

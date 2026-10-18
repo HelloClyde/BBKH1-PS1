@@ -8,8 +8,9 @@ sys.path.insert(0,str(ROOT/'tests/support'))
 from mips_smoke import Machine,PAYLOAD_OFFSET
 
 class PS1Machine(Machine):
-    def __init__(self,bda,guest,path='A:\\PS1\\H1TEST.exe',bios=None):
-        files={path:guest}
+    def __init__(self,bda,guest,path='A:\\PS1\\H1TEST.exe',bios=None,files=None):
+        files=dict(files) if files is not None else {}
+        files[path]=guest
         if bios is not None:files['A:\\PS1\\bios.bin']=bios
         super().__init__(bda,files=files,path=path)
         from mxu_lane_model import install

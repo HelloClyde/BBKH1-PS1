@@ -1,5 +1,6 @@
 #include "h1_sdk.h"
 #include "h1_port.h"
+#include "settings.h"
 #if H1_CPU_MHZ > 336
 #include "runtime_clock.h"
 #endif
@@ -57,7 +58,7 @@ extern "C" void h1_ps1_configure(void){
 }
 extern "C" int h1_app_main(void){
     FILE *log=fopen("A:\\PS1\\h1ps1.log","wb");if(log)fclose(log);
-    h1_ps1_log("H1PS1_BEGIN version=0.1.0-dev jit=%u",!H1_INTERPRETER);h1_ps1_log_flush();
+    h1_ps1_log("H1PS1_BEGIN version=" H1_PS1_VERSION " jit=%u",!H1_INTERPRETER);h1_ps1_log_flush();
     h1_ps1_stats.state=1;
     if(h1_ps1_setjmp(h1_ps1_jump)==0){
         int selection=h1_ps1_select(path,sizeof path);if(selection<=0){if(selection<0)h1_ps1_stats.error=1;goto done;}
@@ -66,6 +67,7 @@ extern "C" int h1_app_main(void){
         bool exe=ext&&!strcasecmp(ext,".exe");
         if(exe&&!valid_exe(path)){h1_ps1_stats.error=4;goto done;}
         h1_ps1_configure();
+        h1_settings_load(path);h1_ps1_apply_settings();
         h1_ps1_video_open();
         // Calibrate against actual RTC seconds; preserve firmware clocks.
         unsigned rtc=h1_ps1_rtc(),start=h1_raw_tick_80hz();
@@ -115,6 +117,7 @@ done:
     h1_clock_run_close();
     h1_clock_run_checkpoint(3);
 #endif
+    if(h1_settings_save()<0)h1_ps1_log("SETTINGS_SAVE failed=1");
     if(cpu_ready){h1_ps1_stats.pc=psxRegs.pc;
         if(psxM){h1_ps1_stats.checksum=*(uint32_t*)(psxM+0x100);for(unsigned i=0;i<4;++i)h1_ps1_stats.cpu_checks[i]=((uint32_t*)(psxM+0x108))[i];}
         sioSyncMcds();EjectMcd(MCD1);EjectMcd(MCD2);}

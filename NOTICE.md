@@ -11,3 +11,5 @@
 完整上游网址、提交与构建前校验见 `UPSTREAM.json`；依赖的原始声明保留在各固定版本源码中。本项目不主张拥有上游软件或相关商标。
 
 - `tests/support/` 的 H1 服务模型来自同一 H1 工作区，沿用 GPL-2.0。它只模拟服务表与内存，不包含 BBK 固件。
+
+- PS1 触屏暂停菜单沿用同一 H1 工作区 GBA 菜单的操作和绘制方式，适配代码以 GPL-2.0-or-later 提供。中文位图字形来自 Noto Sans CJK SC（OFL 1.1），见 `assets/README.md` 与 `assets/licenses/NotoSansCJK-OFL.txt`；字体不适用项目 GPL。

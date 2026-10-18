@@ -23,4 +23,4 @@ static struct out_driver driver={"H1 native PCM",init,finish,busy,feed};
 struct out_driver *out_current=&driver;
 void SetupSound(void){out_current=&driver;init();}
 void h1_ps1_audio_close(void){finish();}
-void h1_ps1_audio_pause(int pause){if(ready){if(pause)gba_audio_pause();else gba_audio_resume();}}
+void h1_ps1_audio_pause(int pause){if(ready){if(pause)gba_audio_pause();else if(!gba_audio_resume())ready=gba_audio_open(44100);}}
