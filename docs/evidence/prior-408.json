@@ -1,0 +1,1061 @@
+{
+  "scope": "prior non-HUD bounded FF7 physical H1/Y100 V1.41 test, not current release BDA",
+  "tested_bda_sha256": "eac276f262607f89b724642528422fafd7e36651d68fc62bee5989cfef28cacf",
+  "tested_options": {
+    "interpreter": false,
+    "test_frames": 12000,
+    "benchmark": false,
+    "reference_video": false,
+    "profile": true,
+    "detailed_profile": false,
+    "mdec_profile": false,
+    "spu_profile": false,
+    "audio_diag": false,
+    "phase_profile": false,
+    "delay_hle": false,
+    "fast_present": true,
+    "fast_map": false,
+    "fast_spu": true,
+    "audio_turbo": true,
+    "clock_test": 408,
+    "fast_lsu": true,
+    "mdec_lut": false,
+    "mxu": true,
+    "mxu_rows": true,
+    "video_hle": true,
+    "vlc_hle": true,
+    "vlc_batch": true,
+    "scene_hle": false,
+    "movie_hle": false,
+    "scene_small": false,
+    "adpcm_cache": false,
+    "fast_adpcm": false,
+    "optimize": "O3",
+    "lto": true,
+    "gpulib": true,
+    "gpu_skip": 1,
+    "idle": true,
+    "fast_spans": true,
+    "cache_mib": 4
+  },
+  "sdk_commit": "067fe072477861dfc8949d7b1a55279fb92d2548",
+  "raw_tick_hz": 40,
+  "logical_frames": 12000,
+  "overclock_at_frame": 2400,
+  "windows": {
+    "6500:8800": {
+      "logical_fps": 60.01304631441617,
+      "seconds": 38.325,
+      "underruns": 0,
+      "nonzero_samples": 1226458,
+      "failures": 0,
+      "dropped": 0,
+      "active_at_all_samples": true
+    },
+    "9500:11900": {
+      "logical_fps": 60.0,
+      "seconds": 40.0,
+      "underruns": 0,
+      "nonzero_samples": 1262960,
+      "failures": 0,
+      "dropped": 0,
+      "active_at_all_samples": true
+    }
+  },
+  "seconds": 200.075,
+  "whole_logical_fps": 59.97251030863426,
+  "final_audio": {
+    "batches": 96037,
+    "submitted": 4,
+    "nonzero": 5401318,
+    "dropped": 0,
+    "failures": 0,
+    "underruns": 2,
+    "active": 0,
+    "rate": 44100,
+    "queued": 0,
+    "playing": 0,
+    "original_volume": 51,
+    "volume_owned": 0
+  },
+  "clock_state": 2,
+  "clock_error": 0,
+  "clean_exit": true,
+  "recorded_cpu_mhz_after_2500": [
+    408
+  ],
+  "original_40hz_consistent_with_RTC": true,
+  "user_feedback": "正常跑完，调试已重开",
+  "original_receipt_sha256": "73ad9f017f868e39ccef882a804c29d204c93138ccd157e4ad3130b7d876fe81",
+  "clock_source_sha256": {
+    "src/clock_control.c": "49a32938301185b27c33277904da86b6f4af361a2edac864a4338882028b5fcc",
+    "src/clock_control.h": "6528684911675327b24fdef21d47d0c3cedd5c660e898d39df07818c1030fb87",
+    "src/clock_run.cpp": "9525fbea6a014a499b410cf47f1b732548875ec5bd554db82b622618313e244d",
+    "src/clock_run.h": "fa8720ce8e0102479c9bf9b00fe168273af326c95589b369255c12ecaf5b4436",
+    "tools/clock_hardware.py": "1c6bc3865544a31a03aa9f5e7a13d77b55116670987a3b66ed4553300d11ad87",
+    "tools/clock_probe.py": "4ca56179054bbcbd0ce387ef401c0fca92498e9a00c67b4e4f2fe6fddc3e985b",
+    "tools/clock_trial.py": "af803c805b41209afd84505c8521623400d0840d2aa7aa750d84e0601336ad20"
+  },
+  "readings": [
+    {
+      "frame": 100,
+      "raw_tick": 18767,
+      "displayed": 1,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 200,
+      "raw_tick": 18833,
+      "displayed": 1,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 300,
+      "raw_tick": 18899,
+      "displayed": 1,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 400,
+      "raw_tick": 18967,
+      "displayed": 12,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 500,
+      "raw_tick": 19033,
+      "displayed": 36,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 600,
+      "raw_tick": 19099,
+      "displayed": 61,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 700,
+      "raw_tick": 19166,
+      "displayed": 86,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 800,
+      "raw_tick": 19233,
+      "displayed": 111,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 900,
+      "raw_tick": 19300,
+      "displayed": 136,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 1000,
+      "raw_tick": 19366,
+      "displayed": 161,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 1100,
+      "raw_tick": 19433,
+      "displayed": 186,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 1200,
+      "raw_tick": 19499,
+      "displayed": 203,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 1300,
+      "raw_tick": 19567,
+      "displayed": 212,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 1400,
+      "raw_tick": 19633,
+      "displayed": 218,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 1500,
+      "raw_tick": 19699,
+      "displayed": 245,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 1600,
+      "raw_tick": 19767,
+      "displayed": 246,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 1700,
+      "raw_tick": 19833,
+      "displayed": 295,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 1800,
+      "raw_tick": 19900,
+      "displayed": 343,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 1900,
+      "raw_tick": 19967,
+      "displayed": 360,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 2000,
+      "raw_tick": 20033,
+      "displayed": 362,
+      "underruns": 1,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 2100,
+      "raw_tick": 20106,
+      "displayed": 382,
+      "underruns": 2,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 2200,
+      "raw_tick": 20172,
+      "displayed": 395,
+      "underruns": 2,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 2300,
+      "raw_tick": 20239,
+      "displayed": 407,
+      "underruns": 2,
+      "cpccr": 1080435232,
+      "cppcr": 452986144
+    },
+    {
+      "frame": 2400,
+      "raw_tick": 20306,
+      "displayed": 420,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 2500,
+      "raw_tick": 20370,
+      "displayed": 432,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 2600,
+      "raw_tick": 20438,
+      "displayed": 445,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 2700,
+      "raw_tick": 20504,
+      "displayed": 457,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 2800,
+      "raw_tick": 20571,
+      "displayed": 470,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 2900,
+      "raw_tick": 20638,
+      "displayed": 482,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 3000,
+      "raw_tick": 20705,
+      "displayed": 495,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 3100,
+      "raw_tick": 20770,
+      "displayed": 507,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 3200,
+      "raw_tick": 20838,
+      "displayed": 520,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 3300,
+      "raw_tick": 20904,
+      "displayed": 532,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 3400,
+      "raw_tick": 20971,
+      "displayed": 545,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 3500,
+      "raw_tick": 21038,
+      "displayed": 557,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 3600,
+      "raw_tick": 21104,
+      "displayed": 570,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 3700,
+      "raw_tick": 21170,
+      "displayed": 582,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 3800,
+      "raw_tick": 21237,
+      "displayed": 595,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 3900,
+      "raw_tick": 21304,
+      "displayed": 607,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 4000,
+      "raw_tick": 21372,
+      "displayed": 620,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 4100,
+      "raw_tick": 21437,
+      "displayed": 632,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 4200,
+      "raw_tick": 21504,
+      "displayed": 645,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 4300,
+      "raw_tick": 21571,
+      "displayed": 657,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 4400,
+      "raw_tick": 21638,
+      "displayed": 670,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 4500,
+      "raw_tick": 21704,
+      "displayed": 682,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 4600,
+      "raw_tick": 21772,
+      "displayed": 695,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 4700,
+      "raw_tick": 21837,
+      "displayed": 707,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 4800,
+      "raw_tick": 21904,
+      "displayed": 719,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 4900,
+      "raw_tick": 21971,
+      "displayed": 732,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 5000,
+      "raw_tick": 22037,
+      "displayed": 744,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 5100,
+      "raw_tick": 22104,
+      "displayed": 757,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 5200,
+      "raw_tick": 22171,
+      "displayed": 769,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 5300,
+      "raw_tick": 22237,
+      "displayed": 782,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 5400,
+      "raw_tick": 22304,
+      "displayed": 794,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 5500,
+      "raw_tick": 22371,
+      "displayed": 807,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 5600,
+      "raw_tick": 22437,
+      "displayed": 819,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 5700,
+      "raw_tick": 22505,
+      "displayed": 832,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 5800,
+      "raw_tick": 22571,
+      "displayed": 844,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 5900,
+      "raw_tick": 22637,
+      "displayed": 857,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 6000,
+      "raw_tick": 22704,
+      "displayed": 869,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 6100,
+      "raw_tick": 22772,
+      "displayed": 882,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 6200,
+      "raw_tick": 22837,
+      "displayed": 894,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 6300,
+      "raw_tick": 22905,
+      "displayed": 907,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 6400,
+      "raw_tick": 22971,
+      "displayed": 919,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 6500,
+      "raw_tick": 23038,
+      "displayed": 932,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 6600,
+      "raw_tick": 23105,
+      "displayed": 944,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 6700,
+      "raw_tick": 23171,
+      "displayed": 957,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 6800,
+      "raw_tick": 23238,
+      "displayed": 969,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 6900,
+      "raw_tick": 23305,
+      "displayed": 982,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 7000,
+      "raw_tick": 23371,
+      "displayed": 994,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 7100,
+      "raw_tick": 23438,
+      "displayed": 1007,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 7200,
+      "raw_tick": 23504,
+      "displayed": 1019,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 7300,
+      "raw_tick": 23572,
+      "displayed": 1032,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 7400,
+      "raw_tick": 23638,
+      "displayed": 1044,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 7500,
+      "raw_tick": 23705,
+      "displayed": 1057,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 7600,
+      "raw_tick": 23771,
+      "displayed": 1069,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 7700,
+      "raw_tick": 23839,
+      "displayed": 1081,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 7800,
+      "raw_tick": 23906,
+      "displayed": 1094,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 7900,
+      "raw_tick": 23971,
+      "displayed": 1106,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 8000,
+      "raw_tick": 24039,
+      "displayed": 1119,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 8100,
+      "raw_tick": 24105,
+      "displayed": 1131,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 8200,
+      "raw_tick": 24173,
+      "displayed": 1144,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 8300,
+      "raw_tick": 24239,
+      "displayed": 1156,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 8400,
+      "raw_tick": 24305,
+      "displayed": 1169,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 8500,
+      "raw_tick": 24370,
+      "displayed": 1181,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 8600,
+      "raw_tick": 24438,
+      "displayed": 1194,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 8700,
+      "raw_tick": 24504,
+      "displayed": 1206,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 8800,
+      "raw_tick": 24571,
+      "displayed": 1219,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 8900,
+      "raw_tick": 24637,
+      "displayed": 1231,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 9000,
+      "raw_tick": 24705,
+      "displayed": 1244,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 9100,
+      "raw_tick": 24770,
+      "displayed": 1256,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 9200,
+      "raw_tick": 24837,
+      "displayed": 1271,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 9300,
+      "raw_tick": 24904,
+      "displayed": 1296,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 9400,
+      "raw_tick": 24971,
+      "displayed": 1321,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 9500,
+      "raw_tick": 25037,
+      "displayed": 1346,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 9600,
+      "raw_tick": 25104,
+      "displayed": 1371,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 9700,
+      "raw_tick": 25170,
+      "displayed": 1396,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 9800,
+      "raw_tick": 25237,
+      "displayed": 1421,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 9900,
+      "raw_tick": 25304,
+      "displayed": 1446,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 10000,
+      "raw_tick": 25371,
+      "displayed": 1471,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 10100,
+      "raw_tick": 25439,
+      "displayed": 1496,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 10200,
+      "raw_tick": 25504,
+      "displayed": 1521,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 10300,
+      "raw_tick": 25571,
+      "displayed": 1546,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 10400,
+      "raw_tick": 25637,
+      "displayed": 1571,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 10500,
+      "raw_tick": 25704,
+      "displayed": 1596,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 10600,
+      "raw_tick": 25771,
+      "displayed": 1621,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 10700,
+      "raw_tick": 25837,
+      "displayed": 1646,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 10800,
+      "raw_tick": 25904,
+      "displayed": 1671,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 10900,
+      "raw_tick": 25970,
+      "displayed": 1696,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 11000,
+      "raw_tick": 26037,
+      "displayed": 1721,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 11100,
+      "raw_tick": 26104,
+      "displayed": 1746,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 11200,
+      "raw_tick": 26170,
+      "displayed": 1771,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 11300,
+      "raw_tick": 26237,
+      "displayed": 1796,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 11400,
+      "raw_tick": 26304,
+      "displayed": 1821,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 11500,
+      "raw_tick": 26370,
+      "displayed": 1846,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 11600,
+      "raw_tick": 26437,
+      "displayed": 1871,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 11700,
+      "raw_tick": 26504,
+      "displayed": 1896,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 11800,
+      "raw_tick": 26570,
+      "displayed": 1921,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 11900,
+      "raw_tick": 26637,
+      "displayed": 1946,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    },
+    {
+      "frame": 12000,
+      "raw_tick": 26704,
+      "displayed": 1971,
+      "underruns": 2,
+      "cpccr": 1080570672,
+      "cppcr": 553649440
+    }
+  ]
+}

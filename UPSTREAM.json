@@ -1,0 +1,18 @@
+{
+  "pcsx4all": {
+    "url": "https://github.com/dmitrysmagin/pcsx4all.git",
+    "commit": "c7faf12b893eba94faced88baa5e7dd059be58b7",
+    "license": "GPL-2.0-or-later; MIPS recompiler MIT notices retained"
+  },
+  "zlib": {
+    "url": "https://github.com/madler/zlib.git",
+    "commit": "51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf",
+    "license": "Zlib"
+  },
+  "h1_sdk": {
+    "url": "https://github.com/MrDefinition1999/bbk-h1-bda-sdk.git",
+    "path": "sdk",
+    "commit": "067fe072477861dfc8949d7b1a55279fb92d2548",
+    "license": "Apache-2.0"
+  }
+}

@@ -1,0 +1,85 @@
+name: Build and release H1 PS1
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: true
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - name: Check version tag
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          if ($env:GITHUB_REF_NAME -ne "v$((Get-Content VERSION -Raw).Trim())") { throw 'Tag differs from VERSION' }
+      - name: Install fixed Python dependencies and MIPS toolchain
+        run: |
+          python -m pip install -r requirements.txt
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          python tools/install_toolchain.py
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: Build exact public configuration
+        run: |
+          python tools/build_release.py
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: Execute compiled MIPS with H1 service and register models
+        run: |
+          python tools/verify_release.py
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: Package install ZIP, complete source and checksums
+        run: |
+          python tools/package_release.py
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: H1-PS1-release
+          path: dist/release/*
+          archive: true
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: H1-PS1-release
+          path: dist/release
+          digest-mismatch: error
+      - name: Verify exact build and publish prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_COMMIT: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$RELEASE_COMMIT"
+          test "$(git rev-parse "refs/tags/${RELEASE_TAG}^{commit}")" = "$RELEASE_COMMIT"
+          python tools/package_release.py --verify --tag "$RELEASE_TAG" --commit "$RELEASE_COMMIT"
+          gh release create "$RELEASE_TAG" dist/release/* --verify-tag --prerelease --title "H1 PS1 $RELEASE_TAG" --notes-file dist/release/RELEASE-NOTES.md

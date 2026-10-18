@@ -1,0 +1,14 @@
+/build/
+/dist/
+/.tools/
+__pycache__/
+*.pyc
+*.mcd
+*.sav
+*.iso
+*.cue
+*.bin
+*.bda
+*.elf
+*.o
+*.log
