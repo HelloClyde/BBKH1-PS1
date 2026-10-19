@@ -1,66 +1,46 @@
 {
-  "scope": "Previously captured original physical-device screenshots; visual examples only, not new v0.1.3 hardware, audio or FPS evidence. Desktop still shows the old PS1 name/icon and game screens predate the HUD.",
+  "scope": "Original physical H1/Y100 V1.41 screenshots from verified development builds before the HUD. Native picker and FF7 Aerith recaptured on 2026-10-19. Visual scene examples only; not a new v0.1.3 FPS/audio test.",
   "imported_on": "2026-10-19",
-  "new_h1_debug_calls": false,
+  "new_h1_debug_calls": true,
   "image_processing": "Byte-for-byte copies; no crops, scaling, overlays, generated pixels or retouching.",
   "rights": "Game imagery belongs to the respective rights holders and is not covered by the project code license.",
   "screenshots": [
     {
-      "file": "docs/screenshots/h1-desktop.png",
-      "scene": "H1 desktop",
-      "environment": "physical BBK H1/Y100 V1.41",
-      "dimensions": [
-        480,
-        272
-      ],
-      "png_sha256": "ddb3769fa7e99e93336aa97b66f413939c5572f20bbbcdf4b157b307684fed56",
-      "captured_bda_sha256": "af022d0b59622ff6cb4af499fc563af785aeed8dfc691312af5280a3332e94de",
-      "source_session": "normal-after-slow-bottleneck",
-      "original_file": "normal-after-slow-bottleneck/desktop.png",
-      "source_report_sha256": "d08ed0364bb56b8e9ab68e9faf022bed714994fcf2d81e18bb9a5fca404b1940",
-      "snapshot_sha256": "0a3a6853d41afd268093fbe3dca0038fb66a05792e22ec552d53def69df097ad",
-      "modified": false,
-      "current_release_capture": false
-    },
-    {
       "file": "docs/screenshots/file-picker.png",
-      "scene": "Native file picker",
+      "scene": "Native H1 file picker with FF7 selected",
       "environment": "physical BBK H1/Y100 V1.41",
       "dimensions": [
         480,
         272
       ],
-      "png_sha256": "d96108a18aa36d8b9260338ac3251b0ca8b4c2d21ea86f6f641fd06e2f69fe73",
+      "png_sha256": "6667d8767292c98f6aad48a74b045b1e85736be8a257805c2498ac567f6f65c2",
       "captured_bda_sha256": "e9dec1304138ae64195122c4c2c99ec007a7bda91c80f5851925e37eefb851ee",
-      "source_session": "normal-after-audio-turbo",
-      "original_file": "normal-after-audio-turbo/install/picker.png",
-      "source_report_sha256": "2bd54b0ae471b6197ac1bf035650bd61e855bc58da677ec3cb8efd6b92928586",
-      "snapshot_sha256": "c0742baecba9fb15c41ca9e403567257a3436e9f8904f651bb9e63d1cc7d7e4f",
+      "source_session": "psx-gallery-2026-10-19",
+      "original_file": "ff7-file-picker.png",
+      "source_report_sha256": "e5342c5896429461740c45cfd4a99050637f387336bdad6aa4befcf4831b1dc4",
+      "snapshot_sha256": "dd56ca2401cba959a0d703c03ac8b0cb7907bf1c9963bac15a1a0f4b56a2a24e",
+      "capture_date": "2026-10-19",
       "modified": false,
       "current_release_capture": false
     },
     {
       "file": "docs/screenshots/ff7-opening.png",
-      "scene": "Final Fantasy VII opening movie",
+      "scene": "Final Fantasy VII opening: Aerith with flower basket",
       "environment": "physical BBK H1/Y100 V1.41",
       "dimensions": [
         480,
         272
       ],
-      "png_sha256": "5e71773233537973d08245d631aa5d4ba7e4b7b8eeec2f153fa2f1e80fdc5f92",
-      "captured_bda_sha256": "c8c3ea0025bf07aafb4926f82d6a3d31aa9a87bd78f7b772465b8181307d3b9b",
-      "source_session": "ff7-opening-12000",
-      "original_file": "ff7-opening-12000/frame-6001.png",
-      "source_report_sha256": "4f0a82bf8513dfe6ee22fd549b0085f0d44138580b3410c4e0128dc106ebd958",
-      "snapshot_sha256": "65ee7e2fcfa6191569634fd58e3f214d76cec7ff975ee6d3611f8b3391b92e8a",
+      "png_sha256": "4f4bdf998516a2bc22c662c46e5fedb773010cf408003e7687e1a6c6af7c24ab",
+      "captured_bda_sha256": "e9dec1304138ae64195122c4c2c99ec007a7bda91c80f5851925e37eefb851ee",
+      "source_session": "psx-gallery-2026-10-19",
+      "original_file": "ff7-opening-visible.png",
+      "source_report_sha256": "e5342c5896429461740c45cfd4a99050637f387336bdad6aa4befcf4831b1dc4",
+      "snapshot_sha256": "9dc0dbd13ec75d47edc2bb0891fa250fc2ec705af97de8126e4c11fba5ad7ddb",
+      "capture_date": "2026-10-19",
       "modified": false,
       "current_release_capture": false,
-      "observed_frame": 6001,
-      "capture_options": {
-        "test_frames": 12000,
-        "benchmark": true,
-        "profile": true
-      }
+      "observed_frame": 5802
     },
     {
       "file": "docs/screenshots/ff7-train-station.png",
@@ -103,5 +83,7 @@
       "current_release_capture": false,
       "observed_frame": 2007
     }
-  ]
+  ],
+  "device_returned_to_desktop": true,
+  "debug_service_left_running": true
 }

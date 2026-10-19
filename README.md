@@ -49,19 +49,15 @@ HUD 不占用中间 362×272 游戏画面，仅使用两侧各 59 像素黑边�
 
 ## 截图
 
-以下是此前开发测试保存的 **H1 / Y100 V1.41 真机原始截图，480×272**。桌面仍显示旧名“PS1模拟器”和旧图标，游戏画面尚未加入 HUD；v0.1.3 已更名为 PSX 并更新图标。截图用于展示运行效果，不代表当前版本的新性能测试。[截图来源、对应构建与 SHA-256](docs/evidence/screenshots.json)。
-
-**H1 桌面**
-
-![H1 真机桌面，开发阶段旧名 PS1模拟器](docs/screenshots/h1-desktop.png)
+以下为 **H1 / Y100 V1.41 真机原始截图，480×272**。文件选择器和艾丽丝画面于 2026-10-19 使用已验证的开发构建重新采集；其余来自此前开发测试，均尚未加入 HUD。截图用于展示运行场景，不代表 v0.1.3 的新性能测试。[截图来源、对应构建与 SHA-256](docs/evidence/screenshots.json)。
 
 **文件选择器**
 
 ![H1 真机原生文件选择器](docs/screenshots/file-picker.png)
 
-**《最终幻想 VII》开场动画**
+**《最终幻想 VII》开场：艾丽丝**
 
-![FF7 开场动画中的列车，H1 真机截图](docs/screenshots/ff7-opening.png)
+![FF7 开场中的艾丽丝与花篮，H1 真机截图](docs/screenshots/ff7-opening.png)
 
 **《最终幻想 VII》火车站**
 
