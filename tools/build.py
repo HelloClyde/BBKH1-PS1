@@ -6,9 +6,13 @@ from prepare import prepare
 
 ROOT=Path(__file__).resolve().parents[1]
 WORK=ROOT
+# Match the BDA header's fixed UTC date, including upstream __DATE__ strings.
+# Always override an inherited value so local and CI builds use the same bytes.
+SOURCE_DATE_EPOCH='1792195200' # 2026-10-17 00:00:00 UTC
 
 def run(args):
-    p=subprocess.run(list(map(str,args)),capture_output=True,text=True,encoding='utf-8',errors='replace')
+    p=subprocess.run(list(map(str,args)),capture_output=True,text=True,encoding='utf-8',errors='replace',
+                     env={**os.environ,'SOURCE_DATE_EPOCH':SOURCE_DATE_EPOCH})
     if p.returncode: raise RuntimeError(p.stdout+p.stderr)
     return p.stdout
 
@@ -199,7 +203,7 @@ def main():
         if args.lto and source.name in ('libc.c','libc_extra.c'):lang+=['-fno-lto']
         cmd=[tc/f'mipsel-none-elf-{compiler}.exe',*flags,*lang,'-c',source,'-o',obj]
         # Cache includes header and prepared source digests, not just timestamps.
-        digest=hashlib.sha256(str(cmd).encode()+source.read_bytes()+header_digest).hexdigest()
+        digest=hashlib.sha256(SOURCE_DATE_EPOCH.encode()+str(cmd).encode()+source.read_bytes()+header_digest).hexdigest()
         stamp=obj.with_suffix('.sha256')
         if not obj.exists() or not stamp.exists() or stamp.read_text()!=digest:
             run(cmd); stamp.write_text(digest)
@@ -246,7 +250,7 @@ def main():
     bda.write_bytes(data)
     assert validate_bda(bda)['ok']
     symbols={f[2]:int(f[0],16) for line in run([tc/'mipsel-none-elf-nm.exe',elf]).splitlines() if len(f:=line.split())==3}
-    metadata={'version':(ROOT/'VERSION').read_text(encoding='ascii').strip(),'variant':name,'sha256':hashlib.sha256(data).hexdigest(),'retained_component_symbols':component_symbols,
+    metadata={'version':(ROOT/'VERSION').read_text(encoding='ascii').strip(),'source_date_epoch':int(SOURCE_DATE_EPOCH),'variant':name,'sha256':hashlib.sha256(data).hexdigest(),'retained_component_symbols':component_symbols,
               'size':len(data),'options':vars(args),'symbols':symbols,'hardware_verified':False,'stats_words':33,
               'dependencies':dependencies,'compiler':run([tc/'mipsel-none-elf-gcc.exe','--version']).splitlines()[0],
               'source_sha256':{p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()

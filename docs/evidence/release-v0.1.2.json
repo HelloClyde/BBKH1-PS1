@@ -1,0 +1,10 @@
+{
+  "version": "0.1.2",
+  "bda_sha256": "e5ba9fef35553a598567e43266293c2fb8e193dda6c4f79c721eafc8bfea8c4f",
+  "bytes": 878556,
+  "source_date_epoch": 1792195200,
+  "sdk_commit": "067fe072477861dfc8949d7b1a55279fb92d2548",
+  "hardware_tested": false,
+  "full_firmware_tested": false,
+  "scope": "compiled MIPS with H1 service/register models; no H1Debug or device test"
+}

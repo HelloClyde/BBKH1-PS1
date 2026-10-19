@@ -2,7 +2,7 @@
 
 面向步步高 **H1 / Y100、V1.41 固件**的原生 PS1 模拟器，基于固定版本 PCSX4ALL。支持 MIPS 动态重编译、JZ4740 MXU1 视频颜色转换、事件边界内的 VLC HLE 和带声音运行。
 
-v0.1.1 新增与 H1 GBA 模拟器相同操作方式的触屏暂停菜单，支持 14 个 PS1 按钮映射、拖动音量、静音、音质、显示设置、关于和退出。设置按游戏分别记住。
+v0.1.2 新增与 H1 GBA 模拟器相同操作方式的触屏暂停菜单，支持 14 个 PS1 按钮映射、拖动音量、静音、音质、显示设置、关于和退出。设置按游戏分别记住。
 
 本版保留黑边 HUD：左上显示 **画面更新 FPS / 逻辑 FPS**，例如 `30/60`；右上显示寄存器读出的 CPU 频率，例如 `408M`。这是预发布版，默认尝试运行时 408 MHz，正常退出时还原原频；配置不匹配时保留原频。它不修改启动固件或电压。420 MHz 已因此前两轮自动重启而禁用。
 
@@ -10,7 +10,7 @@ v0.1.1 新增与 H1 GBA 模拟器相同操作方式的触屏暂停菜单，支�
 
 ## 快速开始
 
-从 [Releases](https://github.com/HelloClyde/BBKH1-PS1/releases) 下载 `H1PS1.bda`，或下载 `BBKH1-PS1-v0.1.1-install.zip`。将安装包内的目录合并到 H1 内置磁盘根目录：
+从 [Releases](https://github.com/HelloClyde/BBKH1-PS1/releases) 下载 `H1PS1.bda`，或下载 `BBKH1-PS1-v0.1.2-install.zip`。将安装包内的目录合并到 H1 内置磁盘根目录：
 
 ```text
 应用/程序/H1PS1.bda
@@ -47,7 +47,7 @@ HUD 不占用中间 362×272 游戏画面，仅使用两侧各 59 像素黑边�
 
 ## 截图
 
-以下是 v0.1.1 确切 BDA 在主机 MIPS 服务模型中运行的菜单画面，**尚未经过真机验证**：
+以下是 v0.1.2 确切 BDA 在主机 MIPS 服务模型中运行的菜单画面，**尚未经过真机验证**：
 
 ![触屏暂停菜单，编译代码主机模型](docs/screenshots/pause-menu-model.png)
 
@@ -96,7 +96,7 @@ python tools/build_release.py
 build/jit-o3-lto-gpulib-gskip1-idle-spans-mxu-vhle-vlc-spufast-lsu-present-mrows-vbatch-aturbo-cpu408/H1PS1.bda
 ```
 
-同目录含 ELF、map、构建选项、源码散列和符号元数据。完整源码 Release ZIP 包含三个依赖的对应源码和 `SOURCE-MANIFEST.json`；解压后可直接运行上述 pip、工具链及构建命令，构建器用清单校验无 Git 元数据的源码快照。
+同目录含 ELF、map、构建选项、源码散列和符号元数据。构建器固定 `SOURCE_DATE_EPOCH` 为 2026-10-17 00:00:00 UTC，统一 BDA 头和上游日志的编译日期，避免本机与 CI 时区或编译日期导致 BDA 不同。完整源码 Release ZIP 包含三个依赖的对应源码和 `SOURCE-MANIFEST.json`；解压后可直接运行上述 pip、工具链及构建命令，构建器用清单校验无 Git 元数据的源码快照。
 
 需要原频构建时，将 `tools/release_config.py` 中的全部构建参数原样传给 `tools/build.py`，只把 `--cpu-mhz 408` 改为 `--cpu-mhz 336`，其输出目录不带 `-cpu408`。`tools/build.py --help` 列出诊断和实验选项；TLB 快速映射、扩大视频包装层 HLE、3D HLE 及 ADPCM 缓存实验默认关闭，不能据局部指令减少推断游戏提速。
 
