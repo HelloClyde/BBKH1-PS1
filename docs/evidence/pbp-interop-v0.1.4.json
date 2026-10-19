@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "sha256": "92e2936ec5aa1971f27baaf8e033fbaf4da5301570d4a9ebf16312bec977b38b",
+  "scope": "Local FF7 image converted with official PSXPackager v1.6.3 release (CLI reports 1.6.2); no game data uploaded",
+  "contract_sha256": "12d7c295d25d51cb88f74b42830d20a7e032cfb5e285120a7460f446a8c7abb7",
+  "environment": "compiled MIPS + H1 models; no physical device or FPS measurement",
+  "samples_verified": 41,
+  "boot_frames": 120,
+  "boot_scope": "game executable entry and initial screen; not a full gameplay test",
+  "bin_pbp_guest_ram_and_registers_identical": true
+}

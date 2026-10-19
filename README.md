@@ -1,6 +1,6 @@
 # BBK H1 PSX（PS1 模拟器）
 
-在步步高 **H1 / Y100（V1.41）** 上重温 PS1，支持带声音运行《最终幻想 VII》《山脊赛车》。触屏即可暂停、自定义按键和调节音量，设置按游戏保存。针对 H1 优化，支持运行时 **408 MHz** 与 **FPS / CPU 频率显示**。
+在步步高 **H1 / Y100（V1.41）** 上重温 PS1，支持带声音运行《最终幻想 VII》《山脊赛车》。支持 PSP 常用的 PS1 PBP 压缩镜像，触屏即可暂停、改键和调节音量。针对 H1 优化，支持运行时 **408 MHz** 与 **FPS / CPU 频率显示**。
 
 ## 截图
 
@@ -10,11 +10,11 @@ H1 真机截图拼图，来自开发构建；从左到右、从上到下：文�
 
 ## 快速开始
 
-1. **下载** [即用安装包 v0.1.3（含 BIOS）](https://github.com/HelloClyde/BBKH1-PS1/releases/download/v0.1.3/BBKH1-PS1-v0.1.3-ready-install.zip)，解压后合并到 H1 内置磁盘根目录。程序和 BIOS 已放在对应目录，无需另行配置。
-2. **放入游戏**：游戏可放在 SD 卡 `B:\PS1\`。多音轨游戏保留全部 BIN 文件，从 CUE 启动。
+1. **下载** [即用安装包 v0.1.4（含 BIOS）](https://github.com/HelloClyde/BBKH1-PS1/releases/download/v0.1.4/BBKH1-PS1-v0.1.4-install.zip)，解压后合并到 H1 内置磁盘根目录。程序和 BIOS 已放在对应目录，无需另行配置。
+2. **放入游戏**：游戏可放在 SD 卡 `B:\PS1\`。多音轨 BIN 游戏保留全部文件，从 CUE 启动；PBP 可直接选择。
 3. **开始玩**：从桌面打开 **PSX**，选择游戏。点击触屏打开暂停菜单，可改按键、调音量或退出。
 
-即用包包含 SCPH1001 BIOS 和原创自检程序 `PS1/H1TEST.exe`，不包含商业游戏或 BBK 设备固件。已有 BIOS 时可跳过 `PS1/bios.bin`；单独下载 [PSX.bda](https://github.com/HelloClyde/BBKH1-PS1/releases/download/v0.1.3/PSX.bda) 可用于更新程序。
+即用包包含 SCPH1001 BIOS 和原创自检程序 `PS1/H1TEST.exe`，不包含商业游戏或 BBK 设备固件。已有 BIOS 时可跳过 `PS1/bios.bin`；单独下载 [PSX.bda](https://github.com/HelloClyde/BBKH1-PS1/releases/download/v0.1.4/PSX.bda) 可用于更新程序。
 
 | 按键 | 操作 |
 | --- | --- |
@@ -31,7 +31,7 @@ H1 真机截图拼图，来自开发构建；从左到右、从上到下：文�
 - **触屏菜单**：暂停、14 个 PS1 按钮映射、音量滑条、静音、音质、显示设置、关于和退出。支持方向键与确认键操作。
 - **按游戏记住设置**：映射、音量和显示选项分别保存。退出程序还原设备原音量；“退出游戏”同步记忆卡。
 - **画面信息**：黑边左上显示画面更新 FPS / 逻辑 FPS，例如 `30/60`；右上显示实际 CPU 频率，例如 `408M`。
-- **镜像格式**：PS-X EXE、BIN、2048 字节扇区 ISO 和普通 BINARY CUE。缺少 BIOS 时尝试 HLE BIOS，兼容性有限。
+- **镜像格式**：PS-X EXE、BIN、2048 字节扇区 ISO、普通 BINARY CUE 和未加密 PS1 EBOOT.PBP。缺少 BIOS 时尝试 HLE BIOS，兼容性有限。多碟 PBP 可在暂停菜单“更换光盘”；加密 PBP、PSP 原生游戏和 2 GiB 及以上文件暂不支持。
 
 记忆卡为 `A:\PS1\card1.mcd`、`card2.mcd`，每张 128 KiB；已有卡继续使用，安装包不覆盖。设置保存在 `A:\PS1\cfg-xxxxxxxx.0/.1`，校验损坏时优先回退上一份；日志为 `A:\PS1\h1ps1.log`。
 
@@ -54,7 +54,7 @@ H1 真机截图拼图，来自开发构建；从左到右、从上到下：文�
 | 后段 9500–11900 | 60.00 | 0 |
 | 完整 12,000 帧 | 约 59.97 | 2 |
 
-这是此前单轮片头的真机结果，不代表 v0.1.3、全游戏或赛车全部满速。完整记录与取舍见 [PERFORMANCE.md](PERFORMANCE.md)。
+这是此前单轮片头的真机结果，不代表 v0.1.4、全游戏或赛车全部满速。完整记录与取舍见 [PERFORMANCE.md](PERFORMANCE.md)。
 
 <details>
 <summary>帧率口径、音频取舍与快捷键</summary>
@@ -78,14 +78,14 @@ P、Esc、返回及 F/G/H/T 保留为前端操作键。菜单内方向键与确�
 
 适用 H1 / Y100 V1.41。当前为预发布版；超频稳定性取决于设备，420 MHz 已因此前两轮自动重启而禁用。
 
-v0.1.3 确切 BDA 已进行编译后 MIPS / H1 服务与寄存器模型验证，尚未真机复测。上方真机图来自已验证的开发构建，尚无 HUD；文件选择器和艾丽丝画面于 2026-10-19 补拍，来源与散列记录在 [screenshots.json](docs/evidence/screenshots.json)。
+v0.1.4 确切 BDA 已进行编译后 MIPS / H1 服务与寄存器模型验证，尚未真机复测。上方真机图来自已验证的开发构建，尚无 HUD；文件选择器和艾丽丝画面于 2026-10-19 补拍，来源与散列记录在 [screenshots.json](docs/evidence/screenshots.json)。
 
 目前没有即时存档、换碟界面、模拟摇杆、第二手柄、PBP/压缩镜像或 SBI 支持；CUE 外部 PREGAP 和非 2352 字节原始轨道会拒绝。长期音画同步、完整游戏存取档与多碟流程仍待验证。
 
 <details>
 <summary>菜单与开发验证截图</summary>
 
-以下菜单画面由 v0.1.3 确切 BDA 在主机 MIPS 服务模型中生成：
+以下菜单画面由 v0.1.4 确切 BDA 在主机 MIPS 服务模型中生成：
 
 ![触屏暂停菜单，编译代码主机模型](docs/screenshots/pause-menu-model.png)
 
@@ -138,15 +138,9 @@ build/jit-o3-lto-gpulib-gskip1-idle-spans-mxu-vhle-vlc-spufast-lsu-present-mrows
 python tools/verify_release.py
 ```
 
-main/PR/手动运行触发 Actions 构建和模型验证，版本标签触发预发布。CI 不携带固件、BIOS 或商业游戏。
+main/PR/手动运行触发 Actions 构建和模型验证，版本标签触发预发布。CI 打包时取得散列固定、经发布者确认可再分发的 PS1 BIOS；不携带 BBK 固件或商业游戏。
 
-即用包在已发布安装包上添加获许可的 BIOS，程序字节保持一致。下载原始安装 ZIP 和对应 `SHA256SUMS.txt`，使用本地获许可 BIOS 打包：
-
-```powershell
-python tools/package_ready_install.py --base-install BBKH1-PS1-v0.1.3-install.zip --checksums SHA256SUMS.txt --bios SCPH1001.BIN
-```
-
-输出位于 `dist/ready/`，含即用安装 ZIP、文件清单和独立校验文件；BIOS 散列和发布者确认记录见 [bios-redistribution.json](docs/evidence/bios-redistribution.json)。
+默认安装包已包含 BIOS；来源与发布者确认记录见 [bios-redistribution.json](docs/evidence/bios-redistribution.json)，打包时分别校验来源 ZIP 和 BIOS 的 SHA-256。源码 ZIP 不含 BIOS，重新打包时会从固定版本的公开资产取得。
 
 ## 许可与感谢
 

@@ -1,0 +1,10 @@
+{
+  "version": "0.1.4",
+  "bda_sha256": "92e2936ec5aa1971f27baaf8e033fbaf4da5301570d4a9ebf16312bec977b38b",
+  "bytes": 888740,
+  "source_date_epoch": 1792195200,
+  "sdk_commit": "067fe072477861dfc8949d7b1a55279fb92d2548",
+  "hardware_tested": false,
+  "full_firmware_tested": false,
+  "scope": "compiled MIPS with H1 service/register models, PBP sector contracts and original test disc boot/menu switch; no H1Debug or new device performance test"
+}

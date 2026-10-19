@@ -6,6 +6,7 @@ __pycache__/
 *.mcd
 *.sav
 *.iso
+*.[pP][bB][pP]
 *.cue
 *.bin
 *.bda

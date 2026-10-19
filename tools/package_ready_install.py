@@ -35,7 +35,8 @@ def main():
         path = PurePosixPath(name)
         assert not path.is_absolute() and '..' not in path.parts and ':' not in name and '\\' not in name
         assert path.suffix.lower() not in {'.mcd', '.sav', '.cue', '.iso'}
-    assert permission['file'] not in entries
+    if permission['file'] in entries:
+        assert digest(entries[permission['file']])==permission['sha256']
     bda = entries['应用/程序/PSX.bda']
     metadata = json.loads(entries['PSX.build.json'])
     identity = json.loads((ROOT/f'docs/evidence/release-v{version}.json').read_text(encoding='utf-8'))

@@ -6,12 +6,13 @@
 #include "touch.h"
 #include "game_input.h"
 #include "audio.h"
+#include "disc.h"
 #include "menu_font.h"
 #include <stdio.h>
 #include <string.h>
 
 extern "C" { volatile uint32_t h1_ps1_menu_stats[8] __attribute__((used,externally_visible)); }
-enum {ROOT,KEYS,SOUND,DISPLAY,ABOUT};
+enum {ROOT,KEYS,SOUND,DISPLAY,ABOUT,DISCS};
 static uint32_t *canvas;
 static const unsigned logical[]={4,6,7,5,14,15,13,12,10,11,8,9,3,0};
 static const char *logical_names[]={"上","下","左","右","叉键","方键","圆键","三角","L1","R1","L2","R2","START","SELECT"};
@@ -35,10 +36,11 @@ static void text(const char *s,int x,int y,uint32_t color){
     }
 }
 static unsigned mapped_key(unsigned bit){for(unsigned k=1;k<=42;++k)if(h1_settings.mapping[k]==bit+1)return k;return 0;}
-static int count(int page){return page==ROOT?6:page==KEYS?16:page==SOUND?4:page==DISPLAY?5:1;}
+static int count(int page){return page==ROOT?6+(h1_ps1_disc_count()>1):page==KEYS?16:page==SOUND?4:page==DISPLAY?5:page==DISCS?h1_ps1_disc_count()+1:1;}
 static void box(int page,int i,int *x,int *y,int *w,int *h){
     if(page==ABOUT){*x=338;*y=238;*w=124;*h=28;}
-    else if(page==ROOT){*x=18+(i%2)*230;*y=58+(i/2)*64;*w=214;*h=48;}
+    else if(page==ROOT){bool multi=h1_ps1_disc_count()>1;*x=18+(i%2)*230;*y=58+(i/2)*(multi?44:64);*w=214;*h=multi?36:48;}
+    else if(page==DISCS){if(i==(int)h1_ps1_disc_count()){*x=338;*y=238;*w=124;*h=28;}else{*x=18+(i%2)*230;*y=58+(i/2)*38;*w=214;*h=32;}}
     else if(page==KEYS){*x=18+(i%2)*230;*y=i<14?50+(i/2)*26:238;*w=214;*h=i<14?24:28;}
     else{*x=38;*y=54+i*(page==SOUND?38:36);*w=404;*h=32;}
 }
@@ -59,8 +61,8 @@ static int draw(int page,int cursor,int capture,const char *status){
     fn_t fn=(fn_t)h1_runtime_entry(h1_runtime_table(H1_RUNTIME_GUI_TABLE_SLOT),0x8f4u);
     canvas=fn?fn(info,0):0;
     if(!canvas||info[1]!=480||info[2]!=272||info[3]!=1920||info[5]!=32)return 0;
-    static const char *titles[]={"PSX 游戏已暂停","按键映射","声音设置","显示设置","关于 PSX"};
-    static const char *root[]={"继续游戏","按键映射","声音设置","显示设置","关于","退出游戏"};
+    static const char *titles[]={"PSX 游戏已暂停","按键映射","声音设置","显示设置","关于 PSX","更换光盘"};
+    static const char *root[]={"继续游戏","按键映射","声音设置","显示设置","关于","退出游戏","更换光盘"};
     rect(0,0,480,272,0x0b1720);text(titles[page],18,8,0xf0f7ff);
     char label[96];
     const char *hint=page==ABOUT?"确认／返回回到暂停菜单":capture>=0?"请按实体键，返回取消":status&&*status?status:"触摸选择，方向键／确认，返回继续";
@@ -91,6 +93,9 @@ static int draw(int page,int cursor,int capture,const char *status){
             if(i==1)snprintf(label,sizeof label,"画面输出：每 %u 帧",h1_settings.lcd_skip+1);
             if(i==2)snprintf(label,sizeof label,"帧率与频率：%s",h1_settings.hud?"显示":"隐藏");
             if(i==3)title="恢复默认显示";if(i==4)title="返回";
+        }else if(page==DISCS){
+            if(i==(int)h1_ps1_disc_count())title="返回";
+            else snprintf(label,sizeof label,"光盘 %u%s",i+1,i==(int)h1_ps1_disc_selected()?"（当前）":"");
         }else title="返回";
         int x,y,w,h;box(page,i,&x,&y,&w,&h);rect(x,y,w,h,i==cursor?0x008c7a:0x253b4b);text(title,x+12,y+(h-21)/2,0xf0f7ff);
     }
@@ -141,10 +146,10 @@ extern "C" int h1_ps1_pause_menu(uint8_t held[45],unsigned opening_touch,unsigne
                 h1_settings.volume=key==H1_KEY_LEFT?(v>5?v-5:0):(v<95?v+5:100);
                 h1_settings.volume_set=1;h1_settings.mute=0;h1_settings_changed();h1_ps1_apply_settings();status="";dirty=1;continue;
             }
-            int delta=key==H1_KEY_LEFT?-1:key==H1_KEY_RIGHT?1:key==H1_KEY_UP?(page<=KEYS?-2:-1):key==H1_KEY_DOWN?(page<=KEYS?2:1):0;
+            int delta=key==H1_KEY_LEFT?-1:key==H1_KEY_RIGHT?1:key==H1_KEY_UP?(page<=KEYS||page==DISCS?-2:-1):key==H1_KEY_DOWN?(page<=KEYS||page==DISCS?2:1):0;
             if(delta){cursor=(cursor+delta+count(page))%count(page);dirty=1;}
         }
-        if(back){if(!page){activate=1;cursor=0;}else{cursor=page==KEYS?1:page==SOUND?2:page==DISPLAY?3:4;page=ROOT;capture=-1;pen=-1;status="";dirty=1;continue;}}
+        if(back){if(!page){activate=1;cursor=0;}else{cursor=page==KEYS?1:page==SOUND?2:page==DISPLAY?3:page==DISCS?6:4;page=ROOT;capture=-1;pen=-1;status="";dirty=1;continue;}}
         if(!activate)continue;status="";dirty=1;pen=-1;
         if(page==ROOT){
             if(cursor==0||cursor==5){
@@ -152,7 +157,7 @@ extern "C" int h1_ps1_pause_menu(uint8_t held[45],unsigned opening_touch,unsigne
                 if(saved<0&&h1_settings_writable()&&!save_failed){status="设置未保存，再次选择可继续";save_failed=1;continue;}
                 result=cursor==5;break;
             }
-            page=cursor==1?KEYS:cursor==2?SOUND:cursor==3?DISPLAY:ABOUT;cursor=0;
+            page=cursor==1?KEYS:cursor==2?SOUND:cursor==3?DISPLAY:cursor==6?DISCS:ABOUT;cursor=page==DISCS?h1_ps1_disc_selected():0;
         }else if(page==KEYS){
             if(cursor<14)capture=cursor;
             else if(cursor==14){h1_mapping_defaults();status="已恢复默认按键";}
@@ -170,6 +175,11 @@ extern "C" int h1_ps1_pause_menu(uint8_t held[45],unsigned opening_touch,unsigne
             if(cursor==3){h1_settings.gpu_skip=H1_GPU_SKIP;h1_settings.lcd_skip=H1_GPU_SKIP?0:1;h1_settings.hud=1;}
             if(cursor==4){page=ROOT;cursor=3;continue;}
             h1_settings_changed();h1_ps1_apply_settings();
+        }else if(page==DISCS){
+            if(cursor==(int)h1_ps1_disc_count()){page=ROOT;cursor=6;}
+            else if(cursor==(int)h1_ps1_disc_selected())status="当前光盘，无需更换";
+            else if(h1_ps1_disc_switch(cursor)<0)status="换盘失败，原光盘未变";
+            else status="已更换光盘，返回后继续";
         }else{page=ROOT;cursor=4;}
     }
     h1_ps1_menu_stats[1]=0;h1_ps1_menu_stats[6]=result;h1_ps1_log("PAUSE_MENU_END action=%d",result);return result;

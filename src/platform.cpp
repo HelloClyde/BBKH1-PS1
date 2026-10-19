@@ -3,6 +3,7 @@
 #include "h1_port.h"
 #include "hud.h"
 #include "menu.h"
+#include "disc.h"
 #include "settings.h"
 #if H1_CPU_MHZ > 336
 #include "runtime_clock.h"
@@ -196,7 +197,7 @@ static void pause_at_frame(void){
     unsigned delta=h1_raw_tick_80hz()-start;pace_origin+=delta;h1_ps1_stats.paused_ticks+=delta;
     h1_ps1_stats.raw_end=h1_raw_tick_80hz();paused=0;
     if(action)h1_ps1_stats.stop=1;
-    if(!h1_ps1_stats.stop)h1_ps1_audio_pause(0);
+    if(!h1_ps1_stats.stop){h1_ps1_disc_resume();h1_ps1_audio_pause(0);}
 }
 unsigned get_ticks(void){unsigned hz=h1_ps1_stats.tick_hz;if(!hz)hz=100;return (unsigned)((uint64_t)h1_raw_tick_80hz()*1000000u/hz);}
 void wait_ticks(unsigned t){unsigned a=get_ticks();while(get_ticks()-a<t)h1_ps1_check_stop();}
@@ -255,7 +256,7 @@ extern "C" int h1_ps1_select(char *path,unsigned cap){
 #endif
     char output[512]={0};typedef void(*fn_t)(const char*,const char*,char*);
     fn_t fn=(fn_t)h1_runtime_entry(h1_runtime_table(H1_RUNTIME_GUI_TABLE_SLOT),0x9ecu);
-    if(!fn)return -1;fn("A:\\PS1\\","exe;bin;iso;cue",output);
+    if(!fn)return -1;fn("A:\\PS1\\","exe;bin;iso;cue;pbp",output);
     // The native selector sets game-display mode even when cancelled.
     // Pair open/close to restore desktop drawing before returning to main.
     h1_ps1_video_open();h1_ps1_video_close();

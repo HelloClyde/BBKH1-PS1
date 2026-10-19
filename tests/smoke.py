@@ -60,7 +60,7 @@ class PS1Machine(Machine):
         uc.reg_write(UC_MIPS_REG_PC,uc.reg_read(UC_MIPS_REG_RA))
     def select_file(self,directory,extension,output,*a):
         assert self.string(directory)=='A:\\PS1\\'
-        assert self.string(extension)=='exe;bin;iso;cue'
+        assert self.string(extension)=='exe;bin;iso;cue;pbp'
         self.write(output,self.rom_path.encode('gbk')+b'\0');return 0
     def fopen(self,path,mode,*a):
         # Native H1 append opens at EOF; adapt the shared model too.

@@ -1,6 +1,7 @@
 #include "h1_sdk.h"
 #include "h1_port.h"
 #include "settings.h"
+#include "disc.h"
 #if H1_CPU_MHZ > 336
 #include "runtime_clock.h"
 #endif
@@ -129,7 +130,7 @@ done:
     h1_ps1_log("PERFORMANCE core=%u gpu_skip=%d idle_batches=%u idle_iterations=%u gpu_ticks=%u gpu_calls=%u spu_ticks=%u spu_calls=%u paused_ticks=%u",h1_ps1_stats.core,(int)Config.FrameSkip,h1_ps1_stats.idle_batches,h1_ps1_stats.idle_iterations,h1_ps1_stats.gpu_ticks,h1_ps1_stats.gpu_calls,h1_ps1_stats.spu_ticks,h1_ps1_stats.spu_calls,h1_ps1_stats.paused_ticks);
     h1_ps1_log_flush();
 #if !H1_TEST_FRAMES
-    if(h1_ps1_stats.error)h1_ps1_message("Cannot load game. See A:\\PS1\\h1ps1.log");
+    if(h1_ps1_stats.error)h1_ps1_message(h1_ps1_disc_error()?h1_ps1_disc_error():"Cannot load game. See A:\\PS1\\h1ps1.log");
 #endif
     h1_ps1_stats.state=5;
 #if H1_CLOCK_TEST

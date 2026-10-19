@@ -1,9 +1,13 @@
-/* Cached BIN/ISO/CUE reader for H1. GPL-2.0-or-later. */
+/* Cached BIN/ISO/CUE/PBP reader for H1. GPL-2.0-or-later. */
 #include "h1_sdk.h"
 #include "plugins.h"
 #include "cdriso.h"
 #include "ppf.h"
 #include "h1_port.h"
+#include "disc.h"
+#include "pbp.h"
+#include "cdrom.h"
+#include "misc.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,6 +29,17 @@ unsigned char *(*CDR_getBuffer)(void)=get_buffer;
 unsigned char *sbi_sectors;
 void (CALLBACK *cdrIsoMultidiskCallback)(void);
 unsigned int cdrIsoMultidiskCount=1,cdrIsoMultidiskSelect;
+static H1Pbp *pbp;
+static const char *disc_error;
+static unsigned disc_changed;
+extern "C" const char *h1_ps1_disc_error(void){return disc_error;}
+extern "C" unsigned h1_ps1_disc_count(void){return cdrIsoMultidiskCount;}
+extern "C" unsigned h1_ps1_disc_selected(void){return cdrIsoMultidiskSelect;}
+static void pbp_tracks(const H1PbpInfo &info){
+    memset(tracks,0,sizeof tracks);ntracks=info.tracks;total_sectors=info.sectors;
+    for(unsigned t=1;t<=ntracks;++t){tracks[t].base=150;tracks[t].first=info.track[t].first;tracks[t].start=info.track[t].start;tracks[t].end=info.track[t].end;tracks[t].audio=info.track[t].audio;tracks[t].stride=2352;}
+    cdrIsoMultidiskCount=info.discs;cdrIsoMultidiskSelect=info.selected;
+}
 
 static unsigned msf(unsigned m,unsigned s,unsigned f){return (m*60+s)*75+f;}
 static unsigned unbcd(unsigned b){return (b>>4)*10+(b&15);}
@@ -77,17 +92,22 @@ static int parse_cue(void){
     result=0;
 done:fclose(f);return result;
 }
-void SetIsoFile(const char *p){if(!p){iso[0]=0;return;}if(strlen(p)<sizeof iso)strcpy(iso,p);else iso[0]=0;}
+void SetIsoFile(const char *p){cdrIsoMultidiskSelect=0;if(!p){iso[0]=0;return;}if(strlen(p)<sizeof iso)strcpy(iso,p);else iso[0]=0;}
 const char *GetIsoFile(void){return iso;}
 boolean UsingIso(void){return iso[0]!=0;}
 void SetCdOpenCaseTime(s64 t){open_time=t;}s64 GetCdOpenCaseTime(void){return open_time;}
 long CDR_init(void){return 0;}
-long CDR_close(void){if(data_file)fclose(data_file);if(audio_file)fclose(audio_file);data_file=audio_file=0;data_path[0]=audio_path[0]=0;cache_base=~0u;cache_count=0;playing=0;return 0;}
+long CDR_close(void){if(data_file)fclose(data_file);if(audio_file)fclose(audio_file);h1_pbp_close(pbp);pbp=0;data_file=audio_file=0;data_path[0]=audio_path[0]=0;cache_base=~0u;cache_count=0;playing=disc_changed=0;ntracks=total_sectors=0;cdrIsoMultidiskCount=1;cdrIsoMultidiskSelect=0;return 0;}
 long CDR_shutdown(void){return CDR_close();}
 long CDR_open(void){
-    CDR_close();ntracks=0;total_sectors=0;memset(tracks,0,sizeof tracks);
+    unsigned selected=cdrIsoMultidiskSelect;
+    CDR_close();disc_error=0;open_time=0;memset(tracks,0,sizeof tracks);
     const char *ext=strrchr(iso,'.');
-    if(ext&&!strcasecmp(ext,".cue")){if(parse_cue())return -1;}
+    if(ext&&!strcasecmp(ext,".pbp")){
+        H1PbpInfo info;pbp=h1_pbp_open(iso,selected,&info,&disc_error);
+        if(!pbp){h1_ps1_log("PBP_OPEN_ERROR %s",disc_error);return -1;}pbp_tracks(info);
+        h1_ps1_log("PBP discs=%u selected=%u",info.discs,info.selected+1);
+    }else if(ext&&!strcasecmp(ext,".cue")){if(parse_cue())return -1;}
     else{
         long size=file_size(iso);if(size<=0)return -1;
         unsigned stride=ext&&!strcasecmp(ext,".iso")?2048:2352;
@@ -100,6 +120,7 @@ long CDR_open(void){
 static Track *locate(unsigned lba){for(unsigned t=ntracks;t>0;--t)if(lba>=tracks[t].first&&lba<tracks[t].end)return &tracks[t];return 0;}
 static int read_sector(unsigned lba,uint8_t *dest,bool audio){
     Track *tr=locate(lba);if(!tr||lba<tr->base)return -1;
+    if(pbp)return h1_pbp_read(pbp,lba-150,dest,audio);
     FILE **fp=audio?&audio_file:&data_file;char *path=audio?audio_path:data_path;
     if(!*fp||strcmp(path,tr->path)){
         if(*fp)fclose(*fp);*fp=fopen(tr->path,"rb");if(!*fp)return -1;
@@ -143,6 +164,21 @@ extern "C" void h1_ps1_disc_pump(void){
 extern "C" void h1_ps1_disc_adjust(unsigned previous){if(playing)play_cycle-=previous;}
 long CDR_getStatus(struct CdrStat *st){st->Status=open_time<0||open_time>(s64)time(0)?0x10:0;st->Type=playing?2:1;if(playing)st->Status|=0x80;st->Time[0]=play_pos/4500;st->Time[1]=(play_pos/75)%60;st->Time[2]=play_pos%75;return 0;}
 void cdrIsoInit(void){}int cdrIsoActive(void){return 1;}
-int ReloadCdromPlugin(void){CDR_close();return (int)CDR_open();}
+extern "C" int h1_ps1_disc_switch(unsigned disc){
+    if(!pbp||disc>=cdrIsoMultidiskCount)return -1;
+    if(disc==cdrIsoMultidiskSelect)return 0;
+    H1PbpInfo info;const char *error=0;
+    H1Pbp *next=h1_pbp_open(iso,disc,&info,&error);
+    if(!next){h1_ps1_log("PBP_SWITCH_ERROR disc=%u %s",disc+1,error);return -1;}
+    h1_pbp_close(pbp);pbp=next;playing=0;play_pos=0;pbp_tracks(info);
+    disc_changed=1;
+    h1_ps1_log("PBP_SWITCH disc=%u count=%u",disc+1,cdrIsoMultidiskCount);return 0;
+}
+extern "C" void h1_ps1_disc_resume(void){
+    if(!disc_changed)return;disc_changed=0;
+    CdromId[0]=CdromLabel[0]=0;
+    SetCdOpenCaseTime(time(0)+2);LidInterrupt();
+}
+int ReloadCdromPlugin(void){return (int)CDR_open();}
 void BuildPPFCache(void){}void FreePPFCache(void){}void CheckPPFCache(unsigned char*,unsigned char,unsigned char,unsigned char){}
 int LoadSBI(const char*,int){return -1;}void UnloadSBI(void){}

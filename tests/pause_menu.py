@@ -46,7 +46,7 @@ class Menu(PS1Machine):
             if self.frozen is None:self.frozen=current
             assert current==self.frozen,'Guest registers/RAM changed during paused UI'
             page,cursor,capture=st[2:5]
-            picture={0:'root',1:'mapping',2:'sound',3:'display',4:'about'}[page]
+            picture={0:'root',1:'mapping',2:'sound',3:'display',4:'about',5:'discs'}[page]
             if picture not in self.pictures:self.pictures[picture]=self.read(0x82000000,480*272*4)
             self.volume_trace.append(self.system_volume)
             if self.idle<12:self.idle+=1;event=(-1,-1)

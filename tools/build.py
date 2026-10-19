@@ -144,7 +144,7 @@ def main():
               core/'gpu/gpu_unai',core/'spu/spu_pcsxrearmed',zlib]
     flags += [x for p in includes for x in ('-I',str(p))]
     sources=[ROOT/'src'/p for p in ['entry.S','startup.c','libc.c','libc_extra.c','jump.S',
-             'platform.cpp','disc.cpp','audio_out.c','audio.c','main.cpp','hud.c','settings.c','menu.cpp']]
+             'platform.cpp','disc.cpp','pbp.cpp','audio_out.c','audio.c','main.cpp','hud.c','settings.c','menu.cpp']]
     if args.audio_diag:
         from prepare_audio_diag import prepare_audio_diag
         audio,disc=prepare_audio_diag(ROOT,build)
