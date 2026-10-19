@@ -49,11 +49,32 @@ HUD 不占用中间 362×272 游戏画面，仅使用两侧各 59 像素黑边�
 
 ## 截图
 
-PSX 图标的四种 H1 原生资源解包预览：
+以下是此前开发测试保存的 **H1 / Y100 V1.41 真机原始截图，480×272**。桌面仍显示旧名“PS1模拟器”和旧图标，游戏画面尚未加入 HUD；v0.1.3 已更名为 PSX 并更新图标。截图用于展示运行效果，不代表当前版本的新性能测试。[截图来源、对应构建与 SHA-256](docs/evidence/screenshots.json)。
 
-![PSX 图标的 H1 原生尺寸解包预览](docs/screenshots/icon-resources.png)
+**H1 桌面**
 
-以下是 v0.1.3 确切 BDA 在主机 MIPS 服务模型中运行的菜单画面，**尚未经过真机验证**：
+![H1 真机桌面，开发阶段旧名 PS1模拟器](docs/screenshots/h1-desktop.png)
+
+**文件选择器**
+
+![H1 真机原生文件选择器](docs/screenshots/file-picker.png)
+
+**《最终幻想 VII》开场动画**
+
+![FF7 开场动画中的列车，H1 真机截图](docs/screenshots/ff7-opening.png)
+
+**《最终幻想 VII》火车站**
+
+![FF7 火车站的克劳德与巴雷特对话，H1 真机截图](docs/screenshots/ff7-train-station.png)
+
+**《山脊赛车》**
+
+![山脊赛车的比赛起跑画面，H1 真机截图](docs/screenshots/ridge-racer.png)
+
+<details>
+<summary>暂停菜单、图标资源与开发验证截图</summary>
+
+以下菜单画面由 v0.1.3 确切 BDA 在主机 MIPS 服务模型中运行生成，尚未经过真机验证：
 
 ![触屏暂停菜单，编译代码主机模型](docs/screenshots/pause-menu-model.png)
 
@@ -61,18 +82,19 @@ PSX 图标的四种 H1 原生资源解包预览：
 
 ![音量滑条与音质选项，编译代码主机模型](docs/screenshots/sound-menu-model.png)
 
+PSX 图标的四种 H1 原生资源解包预览：
 
-以下是此前原频极速构建在 H1 真机上的文件选择器，**尚未加入 HUD**：
+![PSX 图标的 H1 原生尺寸解包预览](docs/screenshots/icon-resources.png)
 
-![H1 真机文件选择器](docs/screenshots/physical-picker-before-hud.png)
-
-以下是本版确切 BDA 在 Unicorn MIPS32 + H1 服务模型中运行原创 PS1 自检程序的画面，**不是完整固件模拟器或真机截图**：
+本版确切 BDA 在 Unicorn MIPS32 + H1 服务模型中运行原创 PS1 自检程序的画面；这是主机服务模型，不是完整固件模拟器或真机截图：
 
 ![当前 BDA 的原创 PS1 自检程序，主机服务模型](docs/screenshots/release-homebrew-model.png)
 
-HUD 数字与布局另由实际编译代码验证；下图中间的纯色区域是测试背景：
+HUD 布局验证中间使用纯色测试背景：
 
 ![HUD 编译代码布局测试，30/60 与 408M](docs/screenshots/hud-layout-model.png)
+
+</details>
 
 ## 依赖与构建
 

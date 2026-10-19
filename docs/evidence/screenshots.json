@@ -1,0 +1,107 @@
+{
+  "scope": "Previously captured original physical-device screenshots; visual examples only, not new v0.1.3 hardware, audio or FPS evidence. Desktop still shows the old PS1 name/icon and game screens predate the HUD.",
+  "imported_on": "2026-10-19",
+  "new_h1_debug_calls": false,
+  "image_processing": "Byte-for-byte copies; no crops, scaling, overlays, generated pixels or retouching.",
+  "rights": "Game imagery belongs to the respective rights holders and is not covered by the project code license.",
+  "screenshots": [
+    {
+      "file": "docs/screenshots/h1-desktop.png",
+      "scene": "H1 desktop",
+      "environment": "physical BBK H1/Y100 V1.41",
+      "dimensions": [
+        480,
+        272
+      ],
+      "png_sha256": "ddb3769fa7e99e93336aa97b66f413939c5572f20bbbcdf4b157b307684fed56",
+      "captured_bda_sha256": "af022d0b59622ff6cb4af499fc563af785aeed8dfc691312af5280a3332e94de",
+      "source_session": "normal-after-slow-bottleneck",
+      "original_file": "normal-after-slow-bottleneck/desktop.png",
+      "source_report_sha256": "d08ed0364bb56b8e9ab68e9faf022bed714994fcf2d81e18bb9a5fca404b1940",
+      "snapshot_sha256": "0a3a6853d41afd268093fbe3dca0038fb66a05792e22ec552d53def69df097ad",
+      "modified": false,
+      "current_release_capture": false
+    },
+    {
+      "file": "docs/screenshots/file-picker.png",
+      "scene": "Native file picker",
+      "environment": "physical BBK H1/Y100 V1.41",
+      "dimensions": [
+        480,
+        272
+      ],
+      "png_sha256": "d96108a18aa36d8b9260338ac3251b0ca8b4c2d21ea86f6f641fd06e2f69fe73",
+      "captured_bda_sha256": "e9dec1304138ae64195122c4c2c99ec007a7bda91c80f5851925e37eefb851ee",
+      "source_session": "normal-after-audio-turbo",
+      "original_file": "normal-after-audio-turbo/install/picker.png",
+      "source_report_sha256": "2bd54b0ae471b6197ac1bf035650bd61e855bc58da677ec3cb8efd6b92928586",
+      "snapshot_sha256": "c0742baecba9fb15c41ca9e403567257a3436e9f8904f651bb9e63d1cc7d7e4f",
+      "modified": false,
+      "current_release_capture": false
+    },
+    {
+      "file": "docs/screenshots/ff7-opening.png",
+      "scene": "Final Fantasy VII opening movie",
+      "environment": "physical BBK H1/Y100 V1.41",
+      "dimensions": [
+        480,
+        272
+      ],
+      "png_sha256": "5e71773233537973d08245d631aa5d4ba7e4b7b8eeec2f153fa2f1e80fdc5f92",
+      "captured_bda_sha256": "c8c3ea0025bf07aafb4926f82d6a3d31aa9a87bd78f7b772465b8181307d3b9b",
+      "source_session": "ff7-opening-12000",
+      "original_file": "ff7-opening-12000/frame-6001.png",
+      "source_report_sha256": "4f0a82bf8513dfe6ee22fd549b0085f0d44138580b3410c4e0128dc106ebd958",
+      "snapshot_sha256": "65ee7e2fcfa6191569634fd58e3f214d76cec7ff975ee6d3611f8b3391b92e8a",
+      "modified": false,
+      "current_release_capture": false,
+      "observed_frame": 6001,
+      "capture_options": {
+        "test_frames": 12000,
+        "benchmark": true,
+        "profile": true
+      }
+    },
+    {
+      "file": "docs/screenshots/ff7-train-station.png",
+      "scene": "Final Fantasy VII train station dialogue",
+      "environment": "physical BBK H1/Y100 V1.41",
+      "dimensions": [
+        480,
+        272
+      ],
+      "png_sha256": "5e62df5d2af415dae7445b9aa6e1e552906010aac1af56fba0ad7d651266b430",
+      "captured_bda_sha256": "c8c3ea0025bf07aafb4926f82d6a3d31aa9a87bd78f7b772465b8181307d3b9b",
+      "source_session": "ff7-opening-12000",
+      "original_file": "ff7-opening-12000/running.png",
+      "source_report_sha256": "4f0a82bf8513dfe6ee22fd549b0085f0d44138580b3410c4e0128dc106ebd958",
+      "snapshot_sha256": "d97143bcf2970a22f09b193da4866d9304a494ac7519e7d6d566c7b475ea0317",
+      "modified": false,
+      "current_release_capture": false,
+      "observed_frame": 12000,
+      "capture_options": {
+        "test_frames": 12000,
+        "benchmark": true,
+        "profile": true
+      }
+    },
+    {
+      "file": "docs/screenshots/ridge-racer.png",
+      "scene": "Ridge Racer race start",
+      "environment": "physical BBK H1/Y100 V1.41",
+      "dimensions": [
+        480,
+        272
+      ],
+      "png_sha256": "1b2deedb6f080a2631524cbaf7abc82f0108e014ebbc3123296b8c881ab1b0b3",
+      "captured_bda_sha256": "e28b72e9f37406ea698fedcc076bfd73149ca7437d82030bf0e87bf9542a9032",
+      "source_session": "ridge-cue-pcm-3000",
+      "original_file": "ridge-cue-pcm-3000/frame-2007.png",
+      "source_report_sha256": "2a9320a1a45d8e8f6637951930047c9cbbfc90bb5bd6906921e725b41e2b7558",
+      "snapshot_sha256": "61f8b6c17e14071409f14730d147202bd1a0f76bfd3a6d0e307292b1e907fb14",
+      "modified": false,
+      "current_release_capture": false,
+      "observed_frame": 2007
+    }
+  ]
+}
