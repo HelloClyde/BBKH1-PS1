@@ -1,0 +1,16 @@
+{
+  "file": "PS1/bios.bin",
+  "model": "Sony PlayStation SCPH1001",
+  "bytes": 524288,
+  "sha256": "71af94d1e47a68c11e8fdb9f8368040601514a42a5a399cda48c7d3bff1e99d3",
+  "source": "Existing local SCPH1001.BIN used for the project hardware tests",
+  "copyright": "Sony Computer Entertainment",
+  "project_gpl_license_applies": false,
+  "redistribution_basis": {
+    "type": "publisher_confirmation",
+    "confirmed": true,
+    "date": "2026-10-19",
+    "scope": "Include this BIOS in the public GitHub Release installation package",
+    "independently_verified": false
+  }
+}

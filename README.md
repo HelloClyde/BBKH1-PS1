@@ -10,11 +10,11 @@ H1 真机截图拼图，来自开发构建；从左到右、从上到下：文�
 
 ## 快速开始
 
-1. **下载** [安装包 v0.1.3](https://github.com/HelloClyde/BBKH1-PS1/releases/download/v0.1.3/BBKH1-PS1-v0.1.3-install.zip)，解压后合并到 H1 内置磁盘根目录；也可单独下载 [PSX.bda](https://github.com/HelloClyde/BBKH1-PS1/releases/download/v0.1.3/PSX.bda)，放到 `A:\应用\程序\`。
-2. **放入游戏和 BIOS**：游戏可放在 SD 卡 `B:\PS1\`；自己的 512 KiB PS1 BIOS 放为 `A:\PS1\bios.bin`。多音轨游戏保留全部 BIN 文件，从 CUE 启动。
+1. **下载** [即用安装包 v0.1.3（含 BIOS）](https://github.com/HelloClyde/BBKH1-PS1/releases/download/v0.1.3/BBKH1-PS1-v0.1.3-ready-install.zip)，解压后合并到 H1 内置磁盘根目录。程序和 BIOS 已放在对应目录，无需另行配置。
+2. **放入游戏**：游戏可放在 SD 卡 `B:\PS1\`。多音轨游戏保留全部 BIN 文件，从 CUE 启动。
 3. **开始玩**：从桌面打开 **PSX**，选择游戏。点击触屏打开暂停菜单，可改按键、调音量或退出。
 
-安装包附带原创自检程序 `PS1/H1TEST.exe`，可先试运行；不包含商业游戏、BIOS 或设备固件。
+即用包包含 SCPH1001 BIOS 和原创自检程序 `PS1/H1TEST.exe`，不包含商业游戏或 BBK 设备固件。已有 BIOS 时可跳过 `PS1/bios.bin`；单独下载 [PSX.bda](https://github.com/HelloClyde/BBKH1-PS1/releases/download/v0.1.3/PSX.bda) 可用于更新程序。
 
 | 按键 | 操作 |
 | --- | --- |
@@ -139,6 +139,14 @@ python tools/verify_release.py
 ```
 
 main/PR/手动运行触发 Actions 构建和模型验证，版本标签触发预发布。CI 不携带固件、BIOS 或商业游戏。
+
+即用包在已发布安装包上添加获许可的 BIOS，程序字节保持一致。下载原始安装 ZIP 和对应 `SHA256SUMS.txt`，使用本地获许可 BIOS 打包：
+
+```powershell
+python tools/package_ready_install.py --base-install BBKH1-PS1-v0.1.3-install.zip --checksums SHA256SUMS.txt --bios SCPH1001.BIN
+```
+
+输出位于 `dist/ready/`，含即用安装 ZIP、文件清单和独立校验文件；BIOS 散列和发布者确认记录见 [bios-redistribution.json](docs/evidence/bios-redistribution.json)。
 
 ## 许可与感谢
 
