@@ -2,7 +2,7 @@
   "scope": "Original physical H1/Y100 V1.41 screenshots from verified development builds before the HUD. Native picker and FF7 Aerith recaptured on 2026-10-19. Visual scene examples only; not a new v0.1.3 FPS/audio test.",
   "imported_on": "2026-10-19",
   "new_h1_debug_calls": true,
-  "image_processing": "Byte-for-byte copies; no crops, scaling, overlays, generated pixels or retouching.",
+  "image_processing": "Individual screenshots are byte-for-byte copies. The presentation collage places their unchanged pixels in a 2x2 layout with 8 px gutters; no cropping, scaling, overlays or retouching of the screenshots.",
   "rights": "Game imagery belongs to the respective rights holders and is not covered by the project code license.",
   "screenshots": [
     {
@@ -84,6 +84,20 @@
       "observed_frame": 2007
     }
   ],
+  "collage": {
+    "file": "docs/screenshots/gameplay-collage.png",
+    "dimensions": [984, 568],
+    "png_sha256": "e627b35054594381cf3059208677d747f726edd6927733482b05b541ad8e9b43",
+    "composition": "Deterministic 2x2 layout; each screenshot remains 480x272. All four source pixel regions verified identical after saving the collage.",
+    "gutter_px": 8,
+    "background_rgb": [39, 51, 65],
+    "tiles": [
+      { "source": "docs/screenshots/file-picker.png", "position": [8, 8] },
+      { "source": "docs/screenshots/ff7-opening.png", "position": [496, 8] },
+      { "source": "docs/screenshots/ff7-train-station.png", "position": [8, 288] },
+      { "source": "docs/screenshots/ridge-racer.png", "position": [496, 288] }
+    ]
+  },
   "device_returned_to_desktop": true,
   "debug_service_left_running": true
 }

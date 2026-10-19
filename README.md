@@ -4,13 +4,9 @@
 
 ## 截图
 
-| 文件选择 | FF7：艾丽丝 |
-| :---: | :---: |
-| <img src="docs/screenshots/file-picker.png" alt="H1 真机文件选择器" width="360"> | <img src="docs/screenshots/ff7-opening.png" alt="H1 真机 FF7 艾丽丝开场" width="360"> |
-| **FF7：火车站** | **山脊赛车** |
-| <img src="docs/screenshots/ff7-train-station.png" alt="H1 真机 FF7 火车站" width="360"> | <img src="docs/screenshots/ridge-racer.png" alt="H1 真机山脊赛车" width="360"> |
+![H1 真机截图拼图：文件选择、FF7 艾丽丝开场、FF7 火车站、山脊赛车](docs/screenshots/gameplay-collage.png)
 
-H1 真机原图，来自开发构建。[截图来源](docs/evidence/screenshots.json)
+H1 真机截图拼图，来自开发构建；从左到右、从上到下：文件选择、FF7 艾丽丝开场、FF7 火车站、山脊赛车。[截图来源](docs/evidence/screenshots.json)
 
 ## 快速开始
 
