@@ -1,0 +1,12 @@
+{
+  "tool": "image_gen.imagegen",
+  "mode": "built-in",
+  "generated_at": "2026-10-19",
+  "purpose": "BBK H1 / Y100 native-style PSX desktop app icon",
+  "source": "assets/icon.png",
+  "sha256": "5b67b95eb271ae9b91c2503418c506d5324f81a710226eb83f6baa2232178ac8",
+  "prompt_file": "assets/icon-prompt.txt",
+  "transparent_background": true,
+  "style_reference": "Observed local H1 desktop and existing H1 GBA/FC emulator icons; style only, no source pixels copied",
+  "license": "GPL-2.0-or-later"
+}

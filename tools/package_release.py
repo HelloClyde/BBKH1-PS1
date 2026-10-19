@@ -57,15 +57,15 @@ def verify(output,tag=None,commit=None):
     for row in (output/'SHA256SUMS.txt').read_text(encoding='ascii').splitlines():
         sha,name=row.split('  ',1);assert safe(name) and '/' not in name and name not in entries
         assert digest((output/name).read_bytes())==sha,name;entries[name]=sha
-    expected={'H1PS1.bda','H1PS1.build.json','RELEASE-NOTES.md','release-manifest.json',f'BBKH1-PS1-v{v}-install.zip',f'BBKH1-PS1-v{v}-source.zip'}
+    expected={'PSX.bda','PSX.build.json','RELEASE-NOTES.md','release-manifest.json',f'BBKH1-PS1-v{v}-install.zip',f'BBKH1-PS1-v{v}-source.zip'}
     assert set(entries)==expected and {p.name for p in output.iterdir()}==expected|{'SHA256SUMS.txt'}
-    assert entries['H1PS1.bda']==r['bda_sha256']
+    assert entries['PSX.bda']==r['bda_sha256']
     for name in expected:
         if not name.endswith('.zip'):continue
         with zipfile.ZipFile(output/name) as z:
             assert z.testzip() is None and len(z.namelist())==len(set(z.namelist()))
             assert all(safe(n) for n in z.namelist())
-            if name.endswith('-install.zip'):assert digest(z.read('应用/程序/H1PS1.bda'))==r['bda_sha256']
+            if name.endswith('-install.zip'):assert digest(z.read('应用/程序/PSX.bda'))==r['bda_sha256']
             else:
                 prefix=f'BBKH1-PS1-v{v}/';m=json.loads(z.read(prefix+'SOURCE-MANIFEST.json'))
                 assert m['application_commit']==r['application_commit'] and m['dependencies']==r['dependencies']
@@ -78,34 +78,36 @@ def main():
     if a.verify:verify(a.output,a.tag,a.commit);return
     v=(ROOT/'VERSION').read_text().strip()
     if a.tag:assert a.tag=='v'+v
-    metadata=read_json(BUILD/'H1PS1.build.json');bda=(BUILD/'H1PS1.bda').read_bytes()
+    metadata=read_json(BUILD/'PSX.build.json');bda=(BUILD/'PSX.bda').read_bytes()
     assert digest(bda)==metadata['sha256'] and metadata['version']==v
+    assert metadata['application_title']=='PSX' and metadata['file_name']=='PSX.bda'
+    assert metadata['icon_sha256']==digest((ROOT/'assets/icon.png').read_bytes())
     assert not metadata['options']['test_frames'] and not metadata['options']['benchmark'] and not metadata['options']['profile']
     assert metadata['options']['cpu_mhz']==408 and metadata['options']['audio_turbo']
     for name,sha in metadata['source_sha256'].items():assert digest((ROOT/name).read_bytes())==sha,'Rebuild after source changes: '+name
     sys.path.insert(0,str(ROOT/'sdk'));from h1_bda.validate import validate_bda
-    envelope=validate_bda(BUILD/'H1PS1.bda');assert envelope['ok'] and envelope['title']=='PS1模拟器' and envelope['category']==0x47
+    envelope=validate_bda(BUILD/'PSX.bda');assert envelope['ok'] and envelope['title']=='PSX' and envelope['category']==0x47
     reports={}
     for path in [ROOT/'build/verification/smoke/smoke.json',ROOT/'build/verification/runtime.json',ROOT/'build/model/hud-408/result.json',BUILD/'turbo-frontend.json',BUILD/'frontend.json',BUILD/'spu-samples-equivalence.json',BUILD/'present-equivalence.json',ROOT/'build/verification/pause-menu/result.json',ROOT/'build/verification/settings.json']:
         report=read_json(path);assert report['ok'] and report.get('sha256',report.get('bda_sha256'))==metadata['sha256'];reports[path.relative_to(ROOT).as_posix()]=public_report(report)
     contracts=ROOT/'build/jit-test6-bench-idle'
-    contract_meta=read_json(contracts/'H1PS1.build.json')
+    contract_meta=read_json(contracts/'PSX.build.json')
     for name in ['idle-equivalence.json','disc-contract.json','lifecycle.json']:
         report=read_json(contracts/name);assert report['ok'] and report['sha256']==contract_meta['sha256'];reports[name]=public_report(report)
     mapping=read_json(ROOT/'build/verification/mapping.json');assert mapping['ok'] and mapping['sha256']==contract_meta['sha256'];reports['mapping.json']=mapping
     clock=read_json(ROOT/'build/clock-control-model/model.json');assert clock['ok']
     a.output.mkdir(parents=True,exist_ok=True)
     manifest=source(a.output/f'BBKH1-PS1-v{v}-source.zip',metadata['dependencies'])
-    (a.output/'H1PS1.bda').write_bytes(bda);shutil.copyfile(BUILD/'H1PS1.build.json',a.output/'H1PS1.build.json')
+    (a.output/'PSX.bda').write_bytes(bda);shutil.copyfile(BUILD/'PSX.build.json',a.output/'PSX.build.json')
     shutil.copyfile(ROOT/f'docs/release-v{v}.md',a.output/'RELEASE-NOTES.md')
     record={'version':v,'application_commit':manifest['application_commit'],'dependencies':metadata['dependencies'],
             'bda_sha256':metadata['sha256'],'exact_bda_hardware_tested':False,'full_firmware_in_ci':False,
             'runtime_scope':'Actual release MIPS with H1 services and JZ4740 register models; no new device benchmark',
             'checks':reports,'clock_backend_model':clock,'prior_physical_408_evidence':read_json(ROOT/'docs/evidence/prior-408.json')}
     write_json(a.output/'release-manifest.json',record)
-    install={'应用/程序/H1PS1.bda':bda,'PS1/H1TEST.exe':(ROOT/'build/test-rom/H1TEST.exe').read_bytes(),
+    install={'应用/程序/PSX.bda':bda,'PS1/H1TEST.exe':(ROOT/'build/test-rom/H1TEST.exe').read_bytes(),
              'README.md':(ROOT/'README.md').read_bytes(),'NOTICE.md':(ROOT/'NOTICE.md').read_bytes(),
-             'LICENSE':(ROOT/'LICENSE').read_bytes(),'H1PS1.build.json':(a.output/'H1PS1.build.json').read_bytes()}
+             'LICENSE':(ROOT/'LICENSE').read_bytes(),'PSX.build.json':(a.output/'PSX.build.json').read_bytes()}
     for name,path in [('PCSX4ALL-gpl.txt','third_party/pcsx4all/gpl.txt'),('Zlib-LICENSE.txt','third_party/zlib/LICENSE'),('H1-SDK-LICENSE.txt','sdk/LICENSE'),('H1-SDK-NOTICE.txt','sdk/NOTICE')]:install['LICENSES/'+name]=(ROOT/path).read_bytes()
     install['LICENSES/NotoSansCJK-OFL.txt']=(ROOT/'assets/licenses/NotoSansCJK-OFL.txt').read_bytes()
     recompiler=(ROOT/'third_party/pcsx4all/src/recompiler/mips/recompiler.cpp').read_bytes();install['LICENSES/MIPS-recompiler-MIT.txt']=recompiler.split(b'#include',1)[0]

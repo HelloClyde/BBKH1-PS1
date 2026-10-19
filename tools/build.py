@@ -1,4 +1,4 @@
-"""Build H1PS1: bare-metal MIPS32, PCSX4ALL + H1 SDK."""
+"""Build PSX: bare-metal MIPS32, PCSX4ALL + H1 SDK."""
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 import argparse, hashlib, json, os, subprocess, sys
@@ -217,7 +217,7 @@ def main():
             try: objects.append(future.result())
             except RuntimeError as e: errors.append(str(e))
         if errors: raise RuntimeError('\n'.join(errors))
-    elf,raw,bda=build/'H1PS1.elf',build/'H1PS1.bin',build/'H1PS1.bda'
+    elf,raw,bda=build/'PSX.elf',build/'PSX.bin',build/'PSX.bda'
     # Keep the original decoder and real SPU interfaces callable in the exact
     # cache candidate, so numerical/PCM tests do not depend on LTO inlining.
     component_symbols=['h1_spu_adpcm_uncached','h1_ps1_configure','SPUinit','SPUopen','SPUshutdown',
@@ -233,7 +233,7 @@ def main():
     if args.phase_profile:component_symbols+=['h1_phase_enter','h1_phase_leave','h1_phase_frame']
     run([tc/'mipsel-none-elf-g++.exe',*flags,'-nostdlib','-Wl,--gc-sections','-Wl,--build-id=none',
          *[f'-Wl,--undefined={name}' for name in component_symbols],
-         f'-Wl,-T,{ROOT/"src/h1.ld"}',f'-Wl,-Map,{build/"H1PS1.map"}','-o',elf,*objects,'-lgcc'])
+         f'-Wl,-T,{ROOT/"src/h1.ld"}',f'-Wl,-Map,{build/"PSX.map"}','-o',elf,*objects,'-lgcc'])
     run([tc/'mipsel-none-elf-objcopy.exe','-O','binary',elf,raw])
     sys.path.insert(0,str(sdk))
     from h1_bda.header import HeaderFields,encode_header
@@ -246,17 +246,17 @@ def main():
     resources=build_icon_resources(ROOT/'assets/icon.png')
     header=HeaderFields(category=0x47,file_size_minus_4=PAYLOAD_OFFSET+len(payload)+padding-4,
                         payload_offset=PAYLOAD_OFFSET,resource_offset=RESOURCE_OFFSET,resource_sizes=RESOURCE_SIZES)
-    data=encode_header(header,title='PS1模拟器',build_time='2026-10-17 00:00:00')+resources+payload+bytes(padding)
+    data=encode_header(header,title='PSX',build_time='2026-10-17 00:00:00')+resources+payload+bytes(padding)
     bda.write_bytes(data)
     assert validate_bda(bda)['ok']
     symbols={f[2]:int(f[0],16) for line in run([tc/'mipsel-none-elf-nm.exe',elf]).splitlines() if len(f:=line.split())==3}
-    metadata={'version':(ROOT/'VERSION').read_text(encoding='ascii').strip(),'source_date_epoch':int(SOURCE_DATE_EPOCH),'variant':name,'sha256':hashlib.sha256(data).hexdigest(),'retained_component_symbols':component_symbols,
+    metadata={'version':(ROOT/'VERSION').read_text(encoding='ascii').strip(),'application_title':'PSX','file_name':bda.name,'icon_sha256':hashlib.sha256((ROOT/'assets/icon.png').read_bytes()).hexdigest(),'source_date_epoch':int(SOURCE_DATE_EPOCH),'variant':name,'sha256':hashlib.sha256(data).hexdigest(),'retained_component_symbols':component_symbols,
               'size':len(data),'options':vars(args),'symbols':symbols,'hardware_verified':False,'stats_words':33,
               'dependencies':dependencies,'compiler':run([tc/'mipsel-none-elf-gcc.exe','--version']).splitlines()[0],
               'source_sha256':{p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
                                for directory in (ROOT/'src',ROOT/'tools') for p in sorted(directory.rglob('*'))
                                if p.is_file() and p.suffix in ('.c','.cpp','.h','.S','.py','.ld')}}
-    (build/'H1PS1.build.json').write_text(json.dumps(metadata,indent=2)+'\n')
+    (build/'PSX.build.json').write_text(json.dumps(metadata,indent=2)+'\n')
     print(json.dumps({'bda':str(bda),'sha256':metadata['sha256'],'size':len(data),'size_report':
           run([tc/'mipsel-none-elf-size.exe',elf])},indent=2))
 

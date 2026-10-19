@@ -1,8 +1,8 @@
-# BBK H1 PS1 模拟器
+# BBK H1 PSX（PS1 模拟器）
 
 面向步步高 **H1 / Y100、V1.41 固件**的原生 PS1 模拟器，基于固定版本 PCSX4ALL。支持 MIPS 动态重编译、JZ4740 MXU1 视频颜色转换、事件边界内的 VLC HLE 和带声音运行。
 
-v0.1.2 新增与 H1 GBA 模拟器相同操作方式的触屏暂停菜单，支持 14 个 PS1 按钮映射、拖动音量、静音、音质、显示设置、关于和退出。设置按游戏分别记住。
+v0.1.3 将 BDA 文件名和桌面名称统一为 **PSX**，并换用符合 H1 风格的立体高光主机图标。保留与 H1 GBA 模拟器相同操作方式的触屏暂停菜单，支持 14 个 PS1 按钮映射、拖动音量、静音、音质、显示设置、关于和退出。设置按游戏分别记住。
 
 本版保留黑边 HUD：左上显示 **画面更新 FPS / 逻辑 FPS**，例如 `30/60`；右上显示寄存器读出的 CPU 频率，例如 `408M`。这是预发布版，默认尝试运行时 408 MHz，正常退出时还原原频；配置不匹配时保留原频。它不修改启动固件或电压。420 MHz 已因此前两轮自动重启而禁用。
 
@@ -10,14 +10,16 @@ v0.1.2 新增与 H1 GBA 模拟器相同操作方式的触屏暂停菜单，支�
 
 ## 快速开始
 
-从 [Releases](https://github.com/HelloClyde/BBKH1-PS1/releases) 下载 `H1PS1.bda`，或下载 `BBKH1-PS1-v0.1.2-install.zip`。将安装包内的目录合并到 H1 内置磁盘根目录：
+从 [Releases](https://github.com/HelloClyde/BBKH1-PS1/releases) 下载 `PSX.bda`，或下载 `BBKH1-PS1-v0.1.3-install.zip`。将安装包内的目录合并到 H1 内置磁盘根目录：
 
 ```text
-应用/程序/H1PS1.bda
+应用/程序/PSX.bda
 PS1/H1TEST.exe          原创 PS1 自检程序，可直接试运行
 ```
 
-从设备桌面打开“PS1模拟器”，在选择器中打开游戏。支持 PS-X EXE、BIN、2048 字节扇区 ISO 和普通 BINARY CUE。多音轨游戏必须保留 CUE 引用的全部 BIN 文件，并选择 CUE。大镜像可放在 SD 卡的 `B:\PS1\`；内置盘是 `A:`，电脑分配的盘符不固定。
+升级时移除旧的 `A:\应用\程序\H1PS1.bda`，再复制 `PSX.bda`。游戏、BIOS、记忆卡和设置继续使用原有 `PS1` 目录。
+
+从设备桌面打开“PSX”，在选择器中打开游戏。支持 PS-X EXE、BIN、2048 字节扇区 ISO 和普通 BINARY CUE。多音轨游戏必须保留 CUE 引用的全部 BIN 文件，并选择 CUE。大镜像可放在 SD 卡的 `B:\PS1\`；内置盘是 `A:`，电脑分配的盘符不固定。
 
 如持有自己的 512 KiB PS1 BIOS，请复制为 `A:\PS1\bios.bin`；缺少时尝试 HLE BIOS，兼容性有限。BIOS、商业游戏及设备固件均不提供。共享记忆卡为 `A:\PS1\card1.mcd`、`card2.mcd`，每张 128 KiB；已有卡继续使用，安装包不覆盖存档。退出时等待保存结束。日志为 `A:\PS1\h1ps1.log`。
 
@@ -47,7 +49,11 @@ HUD 不占用中间 362×272 游戏画面，仅使用两侧各 59 像素黑边�
 
 ## 截图
 
-以下是 v0.1.2 确切 BDA 在主机 MIPS 服务模型中运行的菜单画面，**尚未经过真机验证**：
+PSX 图标的四种 H1 原生资源解包预览：
+
+![PSX 图标的 H1 原生尺寸解包预览](docs/screenshots/icon-resources.png)
+
+以下是 v0.1.3 确切 BDA 在主机 MIPS 服务模型中运行的菜单画面，**尚未经过真机验证**：
 
 ![触屏暂停菜单，编译代码主机模型](docs/screenshots/pause-menu-model.png)
 
@@ -93,7 +99,7 @@ python tools/build_release.py
 工具链安装器校验固定下载 SHA-256；已有同版本工具链可设置 `$env:H1_GNU_BIN='工具链绝对路径/bin'`。输出位于：
 
 ```text
-build/jit-o3-lto-gpulib-gskip1-idle-spans-mxu-vhle-vlc-spufast-lsu-present-mrows-vbatch-aturbo-cpu408/H1PS1.bda
+build/jit-o3-lto-gpulib-gskip1-idle-spans-mxu-vhle-vlc-spufast-lsu-present-mrows-vbatch-aturbo-cpu408/PSX.bda
 ```
 
 同目录含 ELF、map、构建选项、源码散列和符号元数据。构建器固定 `SOURCE_DATE_EPOCH` 为 2026-10-17 00:00:00 UTC，统一 BDA 头和上游日志的编译日期，避免本机与 CI 时区或编译日期导致 BDA 不同。完整源码 Release ZIP 包含三个依赖的对应源码和 `SOURCE-MANIFEST.json`；解压后可直接运行上述 pip、工具链及构建命令，构建器用清单校验无 Git 元数据的源码快照。

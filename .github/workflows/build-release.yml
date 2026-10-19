@@ -82,4 +82,4 @@ jobs:
           test "$(git rev-parse HEAD)" = "$RELEASE_COMMIT"
           test "$(git rev-parse "refs/tags/${RELEASE_TAG}^{commit}")" = "$RELEASE_COMMIT"
           python tools/package_release.py --verify --tag "$RELEASE_TAG" --commit "$RELEASE_COMMIT"
-          gh release create "$RELEASE_TAG" dist/release/* --verify-tag --prerelease --title "H1 PS1 $RELEASE_TAG" --notes-file dist/release/RELEASE-NOTES.md
+          gh release create "$RELEASE_TAG" dist/release/* --verify-tag --prerelease --title "H1 PSX $RELEASE_TAG" --notes-file dist/release/RELEASE-NOTES.md

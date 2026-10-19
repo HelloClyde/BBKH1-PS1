@@ -1,4 +1,4 @@
-"""Execute full H1PS1 BDA and its generated MIPS code with H1 API models."""
+"""Execute the full PSX BDA and its generated MIPS code with H1 API models."""
 from pathlib import Path
 import argparse,json,struct,sys,time
 from unicorn import UC_HOOK_CODE,UC_HOOK_MEM_INVALID

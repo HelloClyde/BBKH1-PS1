@@ -59,7 +59,7 @@ static int draw(int page,int cursor,int capture,const char *status){
     fn_t fn=(fn_t)h1_runtime_entry(h1_runtime_table(H1_RUNTIME_GUI_TABLE_SLOT),0x8f4u);
     canvas=fn?fn(info,0):0;
     if(!canvas||info[1]!=480||info[2]!=272||info[3]!=1920||info[5]!=32)return 0;
-    static const char *titles[]={"PS1 游戏已暂停","按键映射","声音设置","显示设置","关于 PS1模拟器"};
+    static const char *titles[]={"PSX 游戏已暂停","按键映射","声音设置","显示设置","关于 PSX"};
     static const char *root[]={"继续游戏","按键映射","声音设置","显示设置","关于","退出游戏"};
     rect(0,0,480,272,0x0b1720);text(titles[page],18,8,0xf0f7ff);
     char label[96];

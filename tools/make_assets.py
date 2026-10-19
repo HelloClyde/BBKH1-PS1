@@ -1,23 +1,12 @@
-"""Original icon and redistributable PS-X EXE (no Sony SDK/BIOS)."""
+"""Build the redistributable PS-X EXE (no Sony SDK/BIOS)."""
 from pathlib import Path
 import os,struct,subprocess
-from PIL import Image,ImageDraw,ImageFont
 ROOT=Path(__file__).resolve().parents[1]
 def main():
-    # The original geometric icon is checked in; normal builds need no system font.
+    # The imagegen-designed PSX icon is checked in; builds never regenerate it.
     if '--regenerate-icon' in __import__('sys').argv:
-        make_icon()
+        raise SystemExit('The PSX icon is a checked-in imagegen asset. See assets/README.md and assets/icon-prompt.txt.')
     make_guest()
-
-def make_icon():
-    icon=Image.new('RGBA',(128,128),(0,0,0,0));d=ImageDraw.Draw(icon)
-    d.rounded_rectangle((3,3,124,124),radius=24,fill='#34354b',outline='#b6b9d3',width=4)
-    d.rounded_rectangle((15,18,112,76),radius=10,fill='#767c98',outline='#ecebff',width=2)
-    d.ellipse((48,24,82,58),fill='#b6b9d3',outline='#f8f8ff',width=2)
-    d.ellipse((61,37,69,45),fill='#34354b')
-    font=ImageFont.load_default(size=31)
-    d.text((29,80),'PS1',font=font,fill='white')
-    icon.save(ROOT/'assets/icon.png')
 
 def make_guest():
     build=ROOT/'build/test-rom';build.mkdir(parents=True,exist_ok=True)

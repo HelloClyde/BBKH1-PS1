@@ -4,7 +4,7 @@ from release_config import ROOT,BUILD
 
 def run(*args):subprocess.run([sys.executable,*map(str,args)],cwd=ROOT,check=True)
 def main():
-    bda=BUILD/'H1PS1.bda'
+    bda=BUILD/'PSX.bda'
     run(ROOT/'tests/smoke.py',bda,'--stop-after','120','--output-dir',ROOT/'build/verification/smoke')
     run(ROOT/'tests/hud.py',bda)
     run(ROOT/'tests/turbo_frontend.py',bda)
@@ -16,7 +16,7 @@ def main():
     run(ROOT/'tests/present_equivalence.py',bda)
     # Failure and sector-reader contracts need non-LTO callable functions.
     run(ROOT/'tools/build.py','--test-frames','6','--benchmark','--idle')
-    contracts=ROOT/'build/jit-test6-bench-idle/H1PS1.bda'
+    contracts=ROOT/'build/jit-test6-bench-idle/PSX.bda'
     run(ROOT/'tests/smoke.py',contracts)
     run(ROOT/'tests/idle_equivalence.py',contracts)
     run(ROOT/'tests/disc_contract.py',contracts)
